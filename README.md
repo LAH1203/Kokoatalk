@@ -1,5 +1,5 @@
 # Kokoatalk
-Web page using node.js
+! Web page using node.js
 with LAH1203(Frontend - UI, UX, View), hyeji1221(Backend - Server, DB)
 
 1. 로그인
