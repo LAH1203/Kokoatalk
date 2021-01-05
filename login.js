@@ -14,11 +14,11 @@ function login() {
     }
     if (user_password) {
         document.getElementById('alert_password').innerText = " ";
-        form.email.style.border = '2px solid';
-        form.email.style.borderColor = '#00D000';
+        form.password.style.border = '2px solid';
+        form.password.style.borderColor = '#00D000';
     } else {
-        form.email.style.border = '2px solid';
-        form.email.style.borderColor = '#FF0000';
+        form.password.style.border = '2px solid';
+        form.password.style.borderColor = '#FF0000';
         document.getElementById('alert_password').style.color = '#FF0000';
     }
 

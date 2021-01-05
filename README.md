@@ -22,5 +22,5 @@ with LAH1203(Frontend - UI, UX, View), hyeji1221(Backend - Server, DB)
 5. 채팅 창
 
 6. 서버 생성
-- createServer ver1 - 임혜지 (2020-1-3)
-  + 외장 모듈 설치(package-lock.json)
+  - createServer ver1 - 임혜지 (2021-1-3)
+    + 외장 모듈 설치(package-lock.json)
