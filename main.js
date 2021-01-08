@@ -9,7 +9,8 @@ var app = express();
 app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
-app.use('/public',static(path.join(__dirname, 'public')));
+// app.use('/public',static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 app.use(cookieParser());
 app.use(expressSession({
     secret:'my key',
