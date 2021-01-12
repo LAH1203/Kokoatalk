@@ -167,7 +167,9 @@ router.route('/process/login').post(function(req, res){
 });
 app.use('/', router);
 
-
+app.get('/login', function(req, res) {
+    // res.render('');
+})
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('서버가 시작되었습니다');

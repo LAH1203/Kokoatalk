@@ -24,3 +24,12 @@ with LAH1203(Frontend - UI, UX, View), hyeji1221(Backend - Server, DB)
 6. 서버 생성
   - createServer ver1 - 임혜지 (2021-1-3)
     + 외장 모듈 설치(package-lock.json)
+
+7. 데이터베이스 연결
+  - 로그인
+  - 회원가입
+  - 친구 목록
+
+[다음주까지 해야할 목록]
+혜지 - firebase로 코드 변경
+아현 - 친구 목록 만들기, html main.js에 연결
