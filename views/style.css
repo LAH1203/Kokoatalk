@@ -3,7 +3,7 @@
 }
 
 .login_container{
-    width: 380px; 
+    width: 350px; 
     height: 520px; 
     margin: auto; 
     border-radius: 3px; 
@@ -58,7 +58,7 @@
     padding-bottom: 10px;
 }
 
-.form_login_button{
+.form_button{
     width: 100%; 
     height: 44px; 
     background-color: rgb(56, 56, 56); 
@@ -69,35 +69,6 @@
     font-weight: 500;
 }
 
-.form_signup_button{
-    width: 100%; 
-    height: 44px; 
-    background-color: rgb(56, 56, 56); 
-    border: 1px; 
-    border-radius: 3px; 
-    color: white; 
-    font-size: 17px; 
-    font-weight: 500;
-}
-
-.form_retLogin_button{
-    width: 100%; 
-    height: 44px; 
-    background-color: rgb(56, 56, 56); 
-    border: 1px; 
-    border-radius: 3px; 
-    color: white; 
-    font-size: 17px; 
-    font-weight: 500;
-}
-
-.form_retSignup_button{
-    width: 100%; 
-    height: 44px; 
-    background-color: rgb(56, 56, 56); 
-    border: 1px; 
-    border-radius: 3px; 
-    color: white; 
-    font-size: 17px; 
-    font-weight: 500;
+.form_label{
+    
 }

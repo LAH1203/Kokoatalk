@@ -7,6 +7,10 @@ var expressSession = require('express-session');
 var multer = require('multer');;
 var app = express();
 app.set('port', process.env.PORT || 3000);
+app.set('views', './views');
+// app.engine('html', require('ejs').renderFile);
+// app.set('view engine', 'html');
+app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
 // app.use('/public',static(path.join(__dirname, 'public')));
@@ -17,7 +21,7 @@ app.use(expressSession({
     resave:true,
     saveUninitialized:true
 }));
-
+app.locals.pretty = true;
 
 // mysql
 var mysql = require('mysql');
@@ -167,9 +171,36 @@ router.route('/process/login').post(function(req, res){
 });
 app.use('/', router);
 
+// // 로그인
+// app.get('/login', function(req, res) {
+//     res.render('login_page.html');
+// });
+
+// // 회원가입
+// app.get('/signup', function(req, res) {
+//     res.render('signup_page.html');
+// });
+
+// // 친구 목록
+// app.get('/friendList', function(req, res) {
+//     // 뒤에 쿼리로 친구 수 전달하면 될 것 같습니다.
+//     res.render('friend_list_page.html');
+// });
+
+// 로그인
 app.get('/login', function(req, res) {
-    // res.render('');
-})
+    res.render('login_page');
+});
+
+// 회원가입
+app.get('/signup', function(req, res) {
+    res.render('signup_page');
+});
+
+// 친구 목록
+app.get('/friendList', function(req, res) {
+    res.render('friend_list_page');
+});
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('서버가 시작되었습니다');

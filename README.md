@@ -14,8 +14,12 @@ with LAH1203(Frontend - UI, UX, View), hyeji1221(Backend - Server, DB)
     + signup_page.html
   - 회원가입 성공/실패 창 구현 ver1 - 이아현 (2021-01-04)
     + signup_success.html, signup_fail.html
+  - 회원가입 조건 구현 ver1 - 이아현 (2021-01-16)
+    + signup.js
 
 3. 친구 목록
+  - 친구 목록 페이지 샘플 코드 작성 ver1 - 이아현 (2021-01-16)
+    + friend_list_page.html
 
 4. 친구 검색 및 추가
 
@@ -29,6 +33,11 @@ with LAH1203(Frontend - UI, UX, View), hyeji1221(Backend - Server, DB)
   - 로그인
   - 회원가입
   - 친구 목록
+
+8. 기타
+  - main.js에 html 코드 연결
+    + 이아현 (2021-01-16)
+  - html 코드 pug로 변경 후 작성 - 이아현 (2021-01-16)
 
 [다음주까지 해야할 목록]
 혜지 - firebase로 코드 변경

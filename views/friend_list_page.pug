@@ -1,0 +1,30 @@
+doctype html
+html
+    head
+        meta(charset='utf-8' name='viewport' content='width=device-width', initial-scale='1.0')
+        title Friend List
+        style
+            include style.css
+        script(src='/friend_list.js')
+    body
+        div(id='container' class='main_container')
+            div(style='padding: 20px;')
+            div(class='login_container')
+                div(class='form_container')
+                    form(name='friend_list_form' action='/process/friendList' method='get')
+                        div(style='height: 10px;')
+                        -// 책 330쪽 참고
+                        div(class='form_label' data-role='header') 친구 목록
+                        br
+                        br
+                        div(data-role='content')
+                            ul(data-role='listview')
+                                li
+                                    a(href='index.html') 이아현
+                                li
+                                    a(href='index.html') 임혜지
+                            ul(data-role='listview')
+                                -// 이것처럼 반복문으로 친구 이름 출력하면 되지 않을까..?
+                                -for (var i=0; i<5; i++)
+                                    li
+                                        a(href='index.html') hello
