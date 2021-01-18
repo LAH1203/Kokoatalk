@@ -15,6 +15,10 @@ require("firebase/auth");
 require("firebase/firestore");
 
 app.set('port', process.env.PORT || 3000);
+app.set('views', './views');
+// app.engine('html', require('ejs').renderFile);
+// app.set('view engine', 'html');
+app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
 // app.use('/public',static(path.join(__dirname, 'public')));
@@ -26,6 +30,7 @@ app.use(expressSession({
     resave:true,
     saveUninitialized:true
 }));
+<<<<<<< HEAD
 
 var firebaseConfig = {
     apiKey: "AIzaSyBj7VScNlQ3z-S0eJZpU8L2QLs5p76Ng34",
@@ -39,6 +44,9 @@ var firebaseConfig = {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
  // firebase.analytics();
+=======
+app.locals.pretty = true;
+>>>>>>> cf2e66f10290cb257db0363f025beaa37e8b5c9f
 
 // mysql
 /*var mysql = require('mysql');
@@ -188,7 +196,39 @@ router.route('/process/login').post(function(req, res){
 });
 app.use('/', router);
 
+// // 로그인
+// app.get('/login', function(req, res) {
+//     res.render('login_page.html');
+// });
 
+// // 회원가입
+// app.get('/signup', function(req, res) {
+//     res.render('signup_page.html');
+// });
+
+// // 친구 목록
+// app.get('/friendList', function(req, res) {
+//     // 뒤에 쿼리로 친구 수 전달하면 될 것 같습니다.
+//     res.render('friend_list_page.html');
+// });
+
+// 로그인
+app.get('/login', function(req, res) {
+    res.render('login_page');
+});
+
+// 회원가입
+app.get('/signup', function(req, res) {
+    res.render('signup_page');
+});
+
+// 친구 목록
+app.get('/friendList', function(req, res) {
+    // friends라는 배열 안에 DB와 연동하여 친구 목록 넣기
+    // 지금은 임시로 friends 배열 생성
+    var friends = ['이아현', '임혜지'];
+    res.render('friend_list_page', { friend_list: friends });
+});
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('서버가 시작되었습니다');

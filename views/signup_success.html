@@ -4,23 +4,23 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width", initial-scale="1.0">
         <title>회원가입 성공</title>
-        <link rel="stylesheet" href="./style.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="/style.css" type="text/css" media="all" />
     </head>
     <body>
         <div id="container" class="main_container">
             <div style="padding: 20px;"></div>
             <div class="login_container">
                 <div class="form_container">
-                    <form name="login_form" action="/process/login" method="get">
+                    <form name="signup_success_form" action="/process/signupSuccess" method="get">
                         <div style="height: 10px;"></div>
-                        <img src="./images/logo.jpg" alt="Logo Title" class="form_logo_title_div" width="300">
+                        <img src="/images/logo.jpg" alt="Logo Title" class="form_logo_title_div" width="300">
                         <div style="height: 60px;"></div>
                         <div class="form_message">
                            회원가입에 성공하였습니다.
                         </div>
                         <div style="height: 70px;"></div>
                         <div>
-                            <button type="button" class="form_retLogin_button" onclick="location.href='./login_page.html'">로그인 페이지로 돌아가기</button>
+                            <button type="button" class="form_button" onclick="location.href='/login'">로그인 페이지로 돌아가기</button>
                         </div>
                     </form>
                 </div>
