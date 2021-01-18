@@ -20,6 +20,7 @@ with LAH1203(Frontend - UI, UX, View), hyeji1221(Backend - Server, DB)
 3. 친구 목록
   - 친구 목록 페이지 샘플 코드 작성 ver1 - 이아현 (2021-01-16)
     + friend_list_page.html
+  - 친구 이름 배열과 연결되도록 코드 추가 ver2 - 이아현 (2021-01-18)
 
 4. 친구 검색 및 추가
 
@@ -29,10 +30,14 @@ with LAH1203(Frontend - UI, UX, View), hyeji1221(Backend - Server, DB)
   - createServer ver1 - 임혜지 (2021-1-3)
     + 외장 모듈 설치(package-lock.json)
 
-7. 데이터베이스 연결
-  - 로그인
-  - 회원가입
-  - 친구 목록
+7. 데이터베이스
+  - 연결
+    + 로그인
+    + 회원가입
+    + 친구 목록
+  - 내부 구조
+    + 본인 이메일, 비밀번호, 이름
+    + 친구 목록
 
 8. 기타
   - main.js에 html 코드 연결

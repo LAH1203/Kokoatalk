@@ -199,7 +199,10 @@ app.get('/signup', function(req, res) {
 
 // 친구 목록
 app.get('/friendList', function(req, res) {
-    res.render('friend_list_page');
+    // friends라는 배열 안에 DB와 연동하여 친구 목록 넣기
+    // 지금은 임시로 friends 배열 생성
+    var friends = ['이아현', '임혜지'];
+    res.render('friend_list_page', { friend_list: friends });
 });
 
 http.createServer(app).listen(app.get('port'), function() {

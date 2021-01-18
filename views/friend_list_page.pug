@@ -14,17 +14,11 @@ html
                     form(name='friend_list_form' action='/process/friendList' method='get')
                         div(style='height: 10px;')
                         -// 책 330쪽 참고
-                        div(class='form_label' data-role='header') 친구 목록
+                        div(class='form_title_p' data-role='header') 친구 목록
                         br
                         br
                         div(data-role='content')
                             ul(data-role='listview')
-                                li
-                                    a(href='index.html') 이아현
-                                li
-                                    a(href='index.html') 임혜지
-                            ul(data-role='listview')
-                                -// 이것처럼 반복문으로 친구 이름 출력하면 되지 않을까..?
-                                -for (var i=0; i<5; i++)
+                                -for (person in friend_list)
                                     li
-                                        a(href='index.html') hello
+                                        a(href='index.html')= friend_list[person]
