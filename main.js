@@ -30,7 +30,6 @@ app.use(expressSession({
     resave:true,
     saveUninitialized:true
 }));
-<<<<<<< HEAD
 
 var firebaseConfig = {
     apiKey: "AIzaSyBj7VScNlQ3z-S0eJZpU8L2QLs5p76Ng34",
@@ -44,9 +43,7 @@ var firebaseConfig = {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
  // firebase.analytics();
-=======
 app.locals.pretty = true;
->>>>>>> cf2e66f10290cb257db0363f025beaa37e8b5c9f
 
 // mysql
 /*var mysql = require('mysql');

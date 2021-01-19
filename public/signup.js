@@ -35,11 +35,11 @@ function signup() {
         document.getElementById('alert_name').style.color = '#FF0000';
     }
 
-    // 이메일과 패스워드가 모두 정확히 입력되었을 때
-    if (user_email && user_password) {
+    // 이메일과 패스워드, 이름이 모두 정확히 입력되었을 때
+    if (user_email && user_password && user_name) {
         // 여기에 DB에 사용자 정보(form.email.value, form.password.value, form.name.value)를 넣는 코드를 쓰면 될 것 같습니다.
-        // 그리고 DB에 정보 넣는 과정에서 에러가 날 경우 signup_fail.html,
-        // 에러가 나지 않을 경우에는 signup_success.html이 실행될 수 있도록 만들어주세욥
+        // 그리고 DB에 정보 넣는 과정에서 에러가 날 경우 signup_fail,
+        // 에러가 나지 않을 경우에는 signup_success이 실행될 수 있도록 만들어주세욥
     }
 
 }
