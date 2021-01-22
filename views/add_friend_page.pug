@@ -1,0 +1,34 @@
+doctype html
+html
+    head
+        meta(charset='utf-8' name='viewport' content='width=device-width', initial-scale='1.0')
+        title Add Friend
+        style
+            include style.css
+        script(src='/search_add_user.js')
+    body
+        div(id='container' class='main_container')
+            div(style='padding: 20px;')
+            div(class='login_container')
+                div(class='form_container')
+                    form(name='add_friend_form' action='/addFriend' method='get')
+                        div(style='height: 10px;')
+                        div(class='form_title_p' data-role='header') 사용자 목록
+                        br
+                        br
+                        div(data-role='content')
+                            a 이름
+                            input(type='text' name='search_name' placeholder="Enter user's name" class='form_input')
+                            button(type='button' onclick='searchUser(user_list)') 검색
+                            ul(data-role='listview')
+                                -if(user_name == null)
+                                    -for(person in user_list)
+                                        li
+                                            a= user_list[person]
+                                            button(type='button' onclick='addFriend(user_list[person])') 친구 추가
+                                -else
+                                    -for(person in user_list)
+                                        -if(user_list[person] == user_name)
+                                            li
+                                                a= user_list[person]
+                                                button(type='button' onclick='addFriend(user_list[person])') 친구 추가
