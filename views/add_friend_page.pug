@@ -28,7 +28,7 @@ html
                                             button(type='button' onclick='addFriend(user_list[person])') 친구 추가
                                 -else
                                     -for(person in user_list)
-                                        -if(user_list[person] == user_name)
+                                        -if(user_list[person].indexOf(user_name) != -1)
                                             li
                                                 a= user_list[person]
                                                 button(type='button' onclick='addFriend(user_list[person])') 친구 추가
