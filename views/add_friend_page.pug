@@ -19,16 +19,16 @@ html
                         div(data-role='content')
                             a 이름
                             input(type='text' name='search_name' placeholder="Enter user's name" class='form_input')
-                            button(type='button' onclick='searchUser(user_list)') 검색
+                            button(type='button' value=`${user_list}` onclick='searchUser(value)') 검색
                             ul(data-role='listview')
                                 -if(user_name == null)
                                     -for(person in user_list)
                                         li
                                             a= user_list[person]
-                                            button(type='button' onclick='addFriend(user_list[person])') 친구 추가
+                                            button(type='button' value=`${user_list[person]}` onclick='addFriend(value)') 친구 추가
                                 -else
                                     -for(person in user_list)
                                         -if(user_list[person].indexOf(user_name) != -1)
                                             li
                                                 a= user_list[person]
-                                                button(type='button' onclick='addFriend(user_list[person])') 친구 추가
+                                                button(type='button' value=`${user_list[person]}` onclick='addFriend(value)') 친구 추가

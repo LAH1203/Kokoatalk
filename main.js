@@ -216,9 +216,25 @@ app.get(['/', '/login'], function(req, res) {
     res.render('login_page');
 });
 
+app.get('/loginSuccess', function(req, res) {
+    res.render('login_success');
+});
+
+app.get('loginFail', function(req, res) {
+    res.render('login_fail');
+});
+
 // 회원가입
 app.get('/signup', function(req, res) {
     res.render('signup_page');
+});
+
+app.get('/signupSuccess', function(req, res) {
+    res.render('signup_success');
+});
+
+app.get('/signupFail', function(req, res) {
+    res.render('signup_fail');
 });
 
 // 친구 목록
@@ -238,6 +254,14 @@ app.get('/addFriend', function(req, res) {
     var user_name = req.query.search_name;
     console.log(user_name);
     res.render('add_friend_page', { user_list: users, user_name: user_name });
+});
+
+app.get('/addFriendSuccess', function(req, res) {
+    res.render('add_friend_success');
+});
+
+app.get('/addFriendFail', function(req, res) {
+    res.render('add_friend_fail');
 });
 
 http.createServer(app).listen(app.get('port'), function() {
