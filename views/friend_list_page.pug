@@ -19,6 +19,8 @@ html
                         br
                         div(data-role='content')
                             ul(data-role='listview')
-                                -for (person in friend_list)
+                                -for (friend in friend_list)
                                     li
-                                        a(href='index.html')= friend_list[person]
+                                        a(onclick='startChatting()')= friend_list[friend]
+                        div
+                            button(type='button' class='form_button' onclick="location.href='/addFriend'") 친구 추가

@@ -42,7 +42,8 @@ var firebaseConfig = {
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  var db = firebase.firestore();
+  const auth = firebase.auth();
+  const fs = firebase.firestore();
  // firebase.analytics();
 app.locals.pretty = true;
 
