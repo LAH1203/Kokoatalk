@@ -4,6 +4,8 @@ var fs = require('fs');
 var cors = require('cors');
 var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
+var url = require('url');
+var querystring = require('querystring');
 var multer = require('multer');;
 var app = express();
 // Firebase App (the core Firebase SDK) is always required and
@@ -217,9 +219,25 @@ app.get('/login', function(req, res) {
     res.render('login_page');
 });
 
+app.get('/loginSuccess', function(req, res) {
+    res.render('login_success');
+});
+
+app.get('/loginFail', function(req, res) {
+    res.render('login_fail');
+});
+
 // 회원가입
 app.get('/signup', function(req, res) {
     res.render('signup_page');
+});
+
+app.get('/signupSuccess', function(req, res) {
+    res.render('signup_success');
+});
+
+app.get('/signupFail', function(req, res) {
+    res.render('signup_fail');
 });
 
 // 친구 목록
@@ -228,6 +246,24 @@ app.get('/friendList', function(req, res) {
     // 지금은 임시로 friends 배열 생성
     var friends = ['이아현', '임혜지'];
     res.render('friend_list_page', { friend_list: friends });
+});
+
+app.get('/addFriend', function(req, res) {
+    // users라는 배열 안에 DB와 연동하여 유저 목록 넣기
+    // 지금은 임시로 users 배열 생성
+    var users = ['김수한무', '거북이', '두루미'];
+    // query string 이용
+    var user_name = req.query.search_name;
+    console.log(user_name);
+    res.render('add_friend_page', { user_list: users, user_name: user_name });
+});
+
+app.get('/addFriendSuccess', function(req, res) {
+    res.render('add_friend_success');
+});
+
+app.get('/addFriendFail', function(req, res) {
+    res.render('add_friend_fail');
 });
 
 http.createServer(app).listen(app.get('port'), function() {
