@@ -1,3 +1,18 @@
+var express = require('express');
+var router = express.Router();
+
+var user = firebase.auth().currentUser;
+var name, email, photoUrl, uid, emailVerified;
+
+if (user != null) {
+
+  name = user.displayName;
+  email = user.email;
+  photoUrl = user.photoURL;
+  emailVerified = user.emailVerified;
+  uid = user.uid;  
+
+}
 function login() {
     // 로그인 시 입력된 정보로 DB에 확인한 후
     // DB 내에 해당 사람이 존재할 경우 로그인 성공, 아니면 실패로 해주세요!
