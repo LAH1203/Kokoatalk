@@ -43,7 +43,7 @@ var firebaseConfig = {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
-  const fs = firebase.firestore();
+  var fs = firebase.firestore();
  // firebase.analytics();
 app.locals.pretty = true;
 

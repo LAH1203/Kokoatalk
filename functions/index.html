@@ -1,0 +1,39 @@
+<html>
+    <body>
+
+        <script defer src="https://www.gstatic.com/firebasejs/7.23.0/firebase-app.js"></script>
+
+        <script defer src="https://www.gstatic.com/firebasejs/7.23.0/firebase-auth.js"></script>
+        <script defer src="https://www.gstatic.com/firebasejs/7.23.0/firebase-firestore.js"></script>
+
+        <script>
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyBj7VScNlQ3z-S0eJZpU8L2QLs5p76Ng34",
+                authDomain: "kokoatalk-fb61b.firebaseapp.com",
+                projectId: "kokoatalk-fb61b",
+                storageBucket: "kokoatalk-fb61b.appspot.com",
+                messagingSenderId: "1077956882800",
+                appId: "1:1077956882800:web:71924c155a86cb470a1fb5",
+                measurementId: "G-DL0V7TC955"
+            };
+
+        // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+
+            const auth = firebase.auth();
+            const fs = firebase.firestore();
+        // firebase.analytics();
+        </script>
+
+        <script src = "/main.js"></script>
+        <script src = "/public/login.js"></script>
+        <script src = "/public/signup.js"></script>
+
+
+    </body>
+
+
+
+</html>
+
