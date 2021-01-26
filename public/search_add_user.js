@@ -15,7 +15,7 @@ function searchUser(user_list) {
     const user_list_array = user_list.split(',');
 
     for (i in user_list_array) {
-        if (user_list_array[i] == search_user_name) {
+        if (user_list_array[i].indexOf(search_user_name) != -1) {
             var link = 'http://localhost:3000/addFriend?search_name=' + search_user_name;
             location.href = link;
         }
