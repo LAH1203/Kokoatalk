@@ -41,14 +41,8 @@ function signup() {
     // 이메일과 패스워드, 이름이 모두 정확히 입력되었을 때
     if (user_email && user_password && user_name) {
         // 여기에 DB에 사용자 정보(form.email.value, form.password.value, form.name.value)를 넣는 코드를 쓰면 될 것 같습니다.
-<<<<<<< HEAD
         // 그리고 DB에 정보 넣는 과정에서 에러가 날 경우 signup_fail.html,
         // 에러가 나지 않을 경우에는 signup_success.html이 실행될 수 있도록 만들어주세욥
-=======
-        // 그리고 DB에 정보 넣는 과정에서 에러가 날 경우 /signupFail,
-        // 에러가 나지 않을 경우에는 /signupSuccess로 이동할 수 있도록 만들어주세욥
-        // 페이지 이동은 링크를 미리 만들어놨으므로 링크 이동하시면 됩니다.
->>>>>>> dd3971c93b33fc0a3376a3ce3b9998646ce29aa0
         firebase.auth().createUserWithEmailAndPassword(email, password) // 버튼이 눌렸을 경우 추가...
         .then((user) => {
           const currentUser = {
@@ -68,14 +62,11 @@ function signup() {
           var errorMessage = error.message;
           // ..
         });
-<<<<<<< HEAD
 
 
         // 그리고 DB에 정보 넣는 과정에서 에러가 날 경우 /signupFail,
         // 에러가 나지 않을 경우에는 /signupSuccess로 이동할 수 있도록 만들어주세욥
         // 페이지 이동은 링크를 미리 만들어놨으므로 링크 이동하시면 됩니다.
-=======
->>>>>>> dd3971c93b33fc0a3376a3ce3b9998646ce29aa0
     }
 
 
