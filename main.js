@@ -8,13 +8,7 @@ var url = require('url');
 var querystring = require('querystring');
 var multer = require('multer');;
 var app = express();
-// Firebase App (the core Firebase SDK) is always required and
-// must be listed before other Firebase SDKs
-var firebase = require("firebase/app");
 
-// Add the Firebase products that you want to use
-require("firebase/auth");
-require("firebase/firestore");
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', './views');
@@ -33,21 +27,7 @@ app.use(expressSession({
     saveUninitialized:true
 }));
 
-var firebaseConfig = {
-    apiKey: "AIzaSyBj7VScNlQ3z-S0eJZpU8L2QLs5p76Ng34",
-    authDomain: "kokoatalk-fb61b.firebaseapp.com",
-    projectId: "kokoatalk-fb61b",
-    storageBucket: "kokoatalk-fb61b.appspot.com",
-    messagingSenderId: "1077956882800",
-    appId: "1:1077956882800:web:71924c155a86cb470a1fb5",
-    measurementId: "G-DL0V7TC955"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  var fs = firebase.firestore();
- // firebase.analytics();
-app.locals.pretty = true;
+
 
 
 // mysql
