@@ -24,7 +24,7 @@ html
                                 a(class='form_item_name') 이름
                             div(style='height: 3px;')
                             input(type='text' name='search_name' placeholder="Enter user's name" class='form_search_name')
-                            button(type='button' class='form_search_button' value=`${user_list}` onclick='searchUser(value)') 검색
+                            button(type='button' class='form_search_button' value=`${user_list}` onclick='searchUser(value)' style='cursor:pointer;') 검색
                             ul(data-role='listview')
                                 -if(user_name == null)
                                     -for(person in user_list)
