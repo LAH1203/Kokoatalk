@@ -75,6 +75,8 @@
     + 이아현 (2021-01-16)
   - html 코드 pug로 변경 후 작성 - 이아현 (2021-01-16)
   - CSS update ver2 (2021-01-31)
+    - CSS update ver2.0
+    - CSS update ver2.1
 
 ## 다음주까지 해야할 목록
 ### 혜지
