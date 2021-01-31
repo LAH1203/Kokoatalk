@@ -224,7 +224,7 @@ app.get('/signupFail', function(req, res) {
 app.get('/friendList', function(req, res) {
     // friends라는 배열 안에 DB와 연동하여 친구 목록 넣기
     // 지금은 임시로 friends 배열 생성
-    var friends = ['이아현', '임혜지'];
+    var friends = ['이아현', '임혜지', '고양이', '야옹'];
     res.render('friend_list_page', { friend_list: friends });
 });
 

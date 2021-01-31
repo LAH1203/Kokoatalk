@@ -1,5 +1,5 @@
-const { DEFAULT_FAILURE_POLICY } = require("firebase-functions");
-const { user } = require("firebase-functions/lib/providers/auth");
+// const { DEFAULT_FAILURE_POLICY } = require("firebase-functions");
+// const { user } = require("firebase-functions/lib/providers/auth");
 
 function signup() {
 
@@ -7,8 +7,8 @@ function signup() {
     const user_email = checkValidEmail(form);
     const user_password = checkValidPassword(form);
     const user_name = checkValidName(form);
-    const auth = firebase.auth();
-    const fs = firebase.firestore();
+    // const auth = firebase.auth();
+    // const fs = firebase.firestore();
 
     if (user_email) {
         document.getElementById('alert_email').innerText = " ";
@@ -43,6 +43,7 @@ function signup() {
         // 여기에 DB에 사용자 정보(form.email.value, form.password.value, form.name.value)를 넣는 코드를 쓰면 될 것 같습니다.
         // 그리고 DB에 정보 넣는 과정에서 에러가 날 경우 signup_fail.html,
         // 에러가 나지 않을 경우에는 signup_success.html이 실행될 수 있도록 만들어주세욥
+        /*
         firebase.auth().createUserWithEmailAndPassword(email, password) // 버튼이 눌렸을 경우 추가...
         .then((user) => {
           const currentUser = {
@@ -62,7 +63,7 @@ function signup() {
           var errorMessage = error.message;
           // ..
         });
-
+        */
 
         // 그리고 DB에 정보 넣는 과정에서 에러가 날 경우 /signupFail,
         // 에러가 나지 않을 경우에는 /signupSuccess로 이동할 수 있도록 만들어주세욥

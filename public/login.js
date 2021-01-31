@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-var user = firebase.auth().currentUser;
-var name, email, photoUrl, uid, emailVerified;
+// var user = firebase.auth().currentUser;
+// var name, email, photoUrl, uid, emailVerified;
 
 /*if (user != null) { // 사용자 프로필 가져오기
 
@@ -31,7 +31,6 @@ function login() {
         res.redirect('error');
       })
     });
-
 
    
 
