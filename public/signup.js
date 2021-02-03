@@ -7,8 +7,35 @@ function signup() {
     const user_email = checkValidEmail(form);
     const user_password = checkValidPassword(form);
     const user_name = checkValidName(form);
-    const auth = firebase.auth();
-    const fs = firebase.firestore();
+
+    var addUser = function(id, name, password, callback) {
+        console.log('addUser 호출됨');
+        
+        pool.getConnection(function(err, conn){
+            if (err) {
+                if (conn) {
+                    conn.release();
+                }
+                callback(err, null);
+                return;
+            }
+            console.log('데이터베이스 연결 스레드 아이디 : '+conn.threadId);
+    
+            var data = {id:id, name:name, password:password}; 
+            var exec = conn.query('insert into users set ?', data, function(err, result){
+                conn.release();
+                console.log('실행 대상 SQL :' + exec.sql);
+    
+                if (err) {
+                    console.log('SQL 실행 시 오류 발생함');
+                    console.dir(err);
+                    callback(err, null);
+                    return;
+                }
+                callback(null,result);
+            });
+        });
+    }
 
     if (user_email) {
         document.getElementById('alert_email').innerText = " ";
@@ -38,30 +65,46 @@ function signup() {
         document.getElementById('alert_name').style.color = '#FF0000';
     }
 
+
+
     // 이메일과 패스워드, 이름이 모두 정확히 입력되었을 때
     if (user_email && user_password && user_name) {
+        console.log('/process/adduser 호출됨');
+      //  var paramId = req.body.id || req.query.id;
+       // var paramPassword= req.body.password || req.query.password;
+      //  var paramName = req.body.name || req.query.name;
+      //  var paramAge = req.body.age || req.query.age;
+        console.log('요청 파라미터 : ' +paramId+', '+ paramPassword+', ' +paramName+', ' +paramAge);
+        if (pool) {
+            addUser(user_email, user_name,user_password, function(err, addUser){
+                if (err) {
+                    console.error('사용자 추가 중 오류 발생: '+ err.stack);
+                    res.writeHead('200', {'Content-Type': 'text/html;charset=utf8'});
+                    res.write('<h2>사용자 추가 중 오류 발생</h2>');
+                    res.write('<p>'+err.stack+'</p>');
+                    res.end();
+                    return;
+                }
+                if(addUser) {
+                    app.get('/signup_success', function(req, res){ //signup_success로 이동
+                        res.redirect('/signup_success');
+                    });
+        
+                }else {
+                    app.get('/signup_fail', function(req, res){ // signup_fail로 이동
+                        res.redirect('/signup_fail');
+                    });
+                }
+            });
+        } else{
+            res.writeHead('200', {'Content-Type': 'text/html;charset=utf8'});
+            res.write('<h2>데이터베이스 연결 실패</h2>');
+            res.end();
+        }
         // 여기에 DB에 사용자 정보(form.email.value, form.password.value, form.name.value)를 넣는 코드를 쓰면 될 것 같습니다.
         // 그리고 DB에 정보 넣는 과정에서 에러가 날 경우 signup_fail.html,
         // 에러가 나지 않을 경우에는 signup_success.html이 실행될 수 있도록 만들어주세욥
-        firebase.auth().createUserWithEmailAndPassword(email, password) // 버튼이 눌렸을 경우 추가...
-        .then((user) => {
-          const currentUser = {
-              email: user_email
-              
-          }
-          fs.collection('users').doc(currentUser.id).set({
-              email: currentUser.email
-          }).then(function( ){
-              console.log('firebase 유저 추가 성공');
-          })
-
-
-        })
-        .catch((error) => {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // ..
-        });
+        
 
 
         // 그리고 DB에 정보 넣는 과정에서 에러가 날 경우 /signupFail,

@@ -31,14 +31,14 @@ app.use(expressSession({
 
 
 // mysql
-/*var mysql = require('mysql');
+var mysql = require('mysql');
 const { RSA_SSLV23_PADDING } = require('constants');
 var pool = mysql.createPool({
     connectionLimit : 10,
     host : 'localhost',
-    user :'nodejs',
+    user :'kokoatalk',
     password : '00000',
-    database : 'test',
+    database : 'kokoatalk',
     debug : false
 });
 
@@ -70,48 +70,10 @@ var addUser = function(id, name, age, password, callback) {
         });
     });
 }
-*/
-var router = express.Router();
-router.route('/process/adduser').post(function(req, res){
-    console.log('/process/adduser 호출됨');
-    var paramId = req.body.id || req.query.id;
-    var paramPassword= req.body.password || req.query.password;
-    var paramName = req.body.name || req.query.name;
-    var paramAge = req.body.age || req.query.age;
 
-    console.log('요청 파라미터 : ' +paramId+', '+ paramPassword+', ' +paramName+', ' +paramAge);
-    if (pool) {
-        addUser(paramId, paramName, paramAge, paramPassword, function(err, addUser){
-            if (err) {
-                console.error('사용자 추가 중 오류 발생: '+ err.stack);
-                res.writeHead('200', {'Content-Type': 'text/html;charset=utf8'});
-                res.write('<h2>사용자 추가 중 오류 발생</h2>');
-                res.write('<p>'+err.stack+'</p>');
-                res.end();
-                return;
-            }
-            if(addUser) {
-                console.dir(addUser);
-                console.log('inserted' + addUser.affetedRows +' rows');
-                var insertId = addUser.insertId;
-                console.log('추가한 레코드 아이디: '+insertId);
-                res.writeHead('200', {'Content-Type': 'text/html;charset=utf8'});
-                res.write('<h2>사용자 추가 성공</h2>');
-                res.end();
-    
-            }else {
-                res.writeHead('200', {'Content-Type': 'text/html;charset=utf8'});
-                res.write('<h2>사용자 추가 실패</h2>');
-                res.end();
-            }
-        });
-    } else{
-        res.writeHead('200', {'Content-Type': 'text/html;charset=utf8'});
-        res.write('<h2>데이터베이스 연결 실패</h2>');
-        res.end();
-    }
-});
-var authUser = function(id, password, callback) {
+var router = express.Router();
+
+var authUser = function(id, password, callback) { // 로그인
     console.log('authUser 호출됨.');
 
     pool.getConnection(function(err, conn) {
@@ -176,7 +138,7 @@ router.route('/process/login').post(function(req, res){
         });
     }
 });
-app.use('/', router);
+
 
 // // 로그인
 // app.get('/login', function(req, res) {
@@ -205,6 +167,45 @@ app.get('/loginSuccess', function(req, res) {
 
 app.get('/loginFail', function(req, res) {
     res.render('login_fail');
+});
+router.route('/signup_page').post(function(req, res){
+    console.log('/process/adduser 호출됨');
+    var paramId = req.body.id || req.query.id;
+    var paramPassword= req.body.password || req.query.password;
+    var paramName = req.body.name || req.query.name;
+    var paramAge = req.body.age || req.query.age;
+
+    console.log('요청 파라미터 : ' +paramId+', '+ paramPassword+', ' +paramName+', ' +paramAge);
+    if (pool) {
+        addUser(paramId, paramName, paramAge, paramPassword, function(err, addUser){
+            if (err) {
+                console.error('사용자 추가 중 오류 발생: '+ err.stack);
+                res.writeHead('200', {'Content-Type': 'text/html;charset=utf8'});
+                res.write('<h2>사용자 추가 중 오류 발생</h2>');
+                res.write('<p>'+err.stack+'</p>');
+                res.end();
+                return;
+            }
+            if(addUser) {
+                console.dir(addUser);
+                console.log('inserted' + addUser.affetedRows +' rows');
+                var insertId = addUser.insertId;
+                console.log('추가한 레코드 아이디: '+insertId);
+                res.writeHead('200', {'Content-Type': 'text/html;charset=utf8'});
+                res.write('<h2>사용자 추가 성공</h2>');
+                res.end();
+    
+            }else {
+                res.writeHead('200', {'Content-Type': 'text/html;charset=utf8'});
+                res.write('<h2>사용자 추가 실패</h2>');
+                res.end();
+            }
+        });
+    } else{
+        res.writeHead('200', {'Content-Type': 'text/html;charset=utf8'});
+        res.write('<h2>데이터베이스 연결 실패</h2>');
+        res.end();
+    }
 });
 
 // 회원가입
@@ -245,6 +246,8 @@ app.get('/addFriendSuccess', function(req, res) {
 app.get('/addFriendFail', function(req, res) {
     res.render('add_friend_fail');
 });
+
+app.use('/', router);
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('서버가 시작되었습니다');
