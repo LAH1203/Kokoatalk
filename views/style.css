@@ -41,6 +41,14 @@
     border-color: gray;
 }
 
+.form_search_name{
+    width: 80%;
+    height: 30px; 
+    border: 1px solid; 
+    border-radius: 3px; 
+    border-color: gray;
+}
+
 .form_message{
     font-weight: bold;
     font-size: 20px;
@@ -67,5 +75,27 @@
     border-radius: 3px; 
     color: white; 
     font-size: 17px; 
+    font-weight: 500;
+}
+
+.form_search_button{
+    width: 15%;
+    height: 30px;
+    background-color: rgb(56, 56, 56); 
+    border: 1px; 
+    border-radius: 3px; 
+    color: white; 
+    font-size: 16px; 
+    font-weight: 500;
+}
+
+.form_add_user_button{
+    width: 15%;
+    height: 30px;
+    background-color: white; 
+    border: 1px; 
+    border-radius: 3px; 
+    color: rgb(56, 56, 56); 
+    font-size: 16px; 
     font-weight: 500;
 }

@@ -1,5 +1,5 @@
-const { DEFAULT_FAILURE_POLICY } = require("firebase-functions");
-const { user } = require("firebase-functions/lib/providers/auth");
+// const { DEFAULT_FAILURE_POLICY } = require("firebase-functions");
+// const { user } = require("firebase-functions/lib/providers/auth");
 
 function signup() {
 
@@ -7,6 +7,7 @@ function signup() {
     const user_email = checkValidEmail(form);
     const user_password = checkValidPassword(form);
     const user_name = checkValidName(form);
+<<<<<<< HEAD
 
     var addUser = function(id, name, password, callback) {
         console.log('addUser 호출됨');
@@ -36,6 +37,10 @@ function signup() {
             });
         });
     }
+=======
+    // const auth = firebase.auth();
+    // const fs = firebase.firestore();
+>>>>>>> f92db48c635e08ea160fbd529cbf3116936501e0
 
     if (user_email) {
         document.getElementById('alert_email').innerText = " ";
@@ -104,8 +109,32 @@ function signup() {
         // 여기에 DB에 사용자 정보(form.email.value, form.password.value, form.name.value)를 넣는 코드를 쓰면 될 것 같습니다.
         // 그리고 DB에 정보 넣는 과정에서 에러가 날 경우 signup_fail.html,
         // 에러가 나지 않을 경우에는 signup_success.html이 실행될 수 있도록 만들어주세욥
+<<<<<<< HEAD
         
 
+=======
+        /*
+        firebase.auth().createUserWithEmailAndPassword(email, password) // 버튼이 눌렸을 경우 추가...
+        .then((user) => {
+          const currentUser = {
+              email: user_email
+              
+          }
+          fs.collection('users').doc(currentUser.id).set({
+              email: currentUser.email
+          }).then(function( ){
+              console.log('firebase 유저 추가 성공');
+          })
+
+
+        })
+        .catch((error) => {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // ..
+        });
+        */
+>>>>>>> f92db48c635e08ea160fbd529cbf3116936501e0
 
         // 그리고 DB에 정보 넣는 과정에서 에러가 날 경우 /signupFail,
         // 에러가 나지 않을 경우에는 /signupSuccess로 이동할 수 있도록 만들어주세욥

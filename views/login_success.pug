@@ -13,8 +13,11 @@ html
                     form(name='login_success_form' action='/process/loginSuccess' method='get')
                         div(style='height: 10px;')
                         img(src='/images/logo.jpg' alt='logo title' class='form_logo_title_div' width='300')
-                        div(style='height: 60px;')
-                        div(class='form_message') 로그인에 성공하였습니다
                         div(style='height: 70px;')
+                        div(class='form_message') 로그인에 성공하였습니다
+                        div(style='height: 110px;')
                         div
-                            button(type='button' class='form_button' onclick="location.href='/friendList'") 친구 목록 페이지로 이동
+                            button(type='button' class='form_button' onclick="location.href='/friendList'" style='cursor:pointer;') 친구 목록 페이지로 이동
+                        div(style='height: 10px;')
+                        div
+                            button(type='button' class='form_button' onclick="location.href='/'" style='cursor:pointer;') 다른 이메일로 로그인

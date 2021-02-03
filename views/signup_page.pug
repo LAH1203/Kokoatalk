@@ -14,10 +14,10 @@ html
                     form(name='signup_form' action='/process/signup' method='get')
                         div(style='height: 10px;')
                         img(src='/images/logo.jpg' alt='logo title' class='form_logo_title_div' width='300')
-                        div(style='height: 30px;')
                         div
                             div
                                 a(class='form_item_name') Email
+                            div(style='height: 3px;')
                             div
                                 input(type='email' name='email' placeholder='Enter e-mail' class='form_input')
                             div(class='form_text_alert_padding')
@@ -25,6 +25,7 @@ html
                         div
                             div
                                 a(class='form_item_name') Password
+                            div(style='height: 3px;')
                             div
                                 input(type='password' name='password' placeholder='Enter password' class='form_input')
                             div(class='form_text_alert_padding')
@@ -32,10 +33,11 @@ html
                         div
                             div
                                 a(class='form_item_name') Name
+                            div(style='height: 3px;')
                             div
                                 input(type='text' name='name' placeholder='Enter name' class='form_input')
                             div(class='form_text_alert_padding')
                                 div(id='alert_name' class='form_text_alert')
                         div(style='height: 10px;')
                         div
-                            button(type='button' class='form_button' onclick="location.href='/signupSuccess") 회원가입
+                            button(type='button' class='form_button' onclick='signup()' style='cursor:pointer;') 회원가입
