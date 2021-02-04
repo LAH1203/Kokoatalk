@@ -65,7 +65,7 @@ app.get(['/', '/login'], function(req, res) {
     res.render('login_page');
 });
 
-router.route('/login').post(function(req, res){
+/*router.route('/login').post(function(req, res){
     console.log('.post login 호출');
     var user = {
         id : req.body.email || req.query.email,
@@ -81,24 +81,45 @@ router.route('/login').post(function(req, res){
             res.redirect('/loginSuccess');
         }
     });
-});
+});*/
 
 app.post('/login', function(req, res){
-    var user = {
-        id : req.body.email || req.query.email,
-        password : req.body.password|| req.query.password
-    }
-    var sql = 'SELECT * FROM users WHERE id = ?, password = ?';
-    pool.query(sql, user, function(err, results){
-        console.log('login');
+    var id = req.body.email || req.query.email;
+    var password = req.body.password|| req.query.password;
+    var params = [id]
+    var sql = 'SELECT * FROM users WHERE id = ?';
+    pool.query(sql, [id], function(err, rows){
+        if (err) {
+            console.log(err);
+        }
+        if (rows == 0) {
+            console.log('일치하는 사용자 없음');
+        }
+        else {
+            var user_in = rows[0];
+            if(password == user_in.password) {
+                req.session.id = user_in.id;
+                req.session.password = user_in.password;
+                req.session.name = user_in.name;
+                req.session.save(function(){
+                    res.redirect('/loginSuccess');
+                });
+            } else {
+                res.redirect('/loginFail');
+            }
+        }
+    });
+});
+
+/*
+console.log('login');
         if(err){
             console.log(err);
             res.redirect('/loginFail');
         } else{
             res.redirect('/loginSuccess');
         }
-    });
-});
+*/
 
 app.get('/loginSuccess', function(req, res) {
     res.render('login_success');
@@ -114,21 +135,29 @@ app.get('/signup', function(req, res) {
 
 // 회원가입
 app.post('/signup', function(req, res){
-    console.log('post');
-    var user = {
-        email : req.body.Email || req.query.Email,
-        name1 : req.body.Name || req.query.Name,
-        password : req.body.Password||req.query.Password
-    };
-   var sql = 'INSERT INTO users (id, name, password) VALUES(?, ?, ?)';
-   pool.query(sql, user, function(err, result, field){
-       if (err){
-           console.log(err);
-           res.redirect('/signupFail');
-       } else{
-           res.redirect('/signupSuccess')
-       }
-   }); 
+    var id = req.body.email || req.query.email;
+    var name = req.body.name || req.query.name;
+    var password = req.body.password||req.query.password;
+    var sql = 'SELECT * FROM users WHERE id=?';
+    pool.query(sql, [id], function(err, rows){
+        if (err) {
+            console.log(err);
+        }
+        if (rows == 0) { // 이미 저장된 사용자가 없으면
+            var sql1= 'INSERT INTO users (id, name, password) VALUES(?,?,?)';
+            var user_info = [id, name, password];
+            pool.query(sql1, user_info, function(err){
+                if(err){
+                    console.log(err);
+                    res.redirect('/signupFail');
+                } else{
+                    res.redirect('/signupSuccess');
+                }
+            });
+        } else{
+            console.log('이미 추가된 사용자가 있음');
+        }
+    });
 });
 
 app.get('/signupSuccess', function(req, res) {
