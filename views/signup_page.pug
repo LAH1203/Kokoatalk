@@ -11,7 +11,7 @@ html
             div(style='padding: 20px;')
             div(class='login_container')
                 div(class='form_container')
-                    form(name='signup_form' action='/process/signup' method='get')
+                    form(name='signup_form' action='/signup' method='post')
                         div(style='height: 10px;')
                         img(src='/images/logo.jpg' alt='logo title' class='form_logo_title_div' width='300')
                         div
@@ -40,4 +40,4 @@ html
                                 div(id='alert_name' class='form_text_alert')
                         div(style='height: 10px;')
                         div
-                            button(type='button' class='form_button' onclick='signup()' style='cursor:pointer;') 회원가입
+                            button(type='submit' class='form_button' style='cursor:pointer;') 회원가입

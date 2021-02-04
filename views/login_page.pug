@@ -11,7 +11,7 @@ html
             div(style='padding: 20px;')
             div(class='login_container')
                 div(class='form_container')
-                    form(name='login_form' action='/process/login' method='get')
+                    form(name='login_form' action='/login' method='post')
                         div(style='height: 10px;')
                         img(src='/images/logo.jpg' alt='logo title' class='form_logo_title_div' width='300')
                         div(style='height: 30px;')
@@ -33,7 +33,7 @@ html
                                 div(id='alert_password' class='form_text_alert')
                         div(style='height: 10px;')
                         div
-                            button(type='button' class='form_button' onclick='login()' style='cursor:pointer;') 이메일로 로그인
+                            button(type='submit' class='form_button' style='cursor:pointer;') 이메일로 로그인
                         div(style='height: 10px;')
                         div
                             button(type='button' class='form_button' onclick="location.href='/signup'" style='cursor:pointer;') 회원가입
