@@ -2,7 +2,7 @@ doctype html
 html
     head
         meta(charset='utf-8' name='viewport' content='width=device-width', initial-scale='1.0')
-        title Add Friend Success
+        title 해당 유저 존재
         style
             include style.css
     body
@@ -10,11 +10,14 @@ html
             div(style='padding: 20px;')
             div(class='login_container')
                 div(class='form_container')
-                    form(name='login_success_form' action='/process/loginSuccess' method='get')
+                    form
                         div(style='height: 10px;')
                         img(src='/images/logo.jpg' alt='logo title' class='form_logo_title_div' width='300')
-                        div(style='height: 60px;')
-                        div(class='form_message') 친구 추가 성공!
                         div(style='height: 70px;')
+                        div(class='form_message') 해당 이메일의 유저가 이미 존재합니다. 로그인하시겠습니까?
+                        div(style='height: 100px;')
                         div
-                            button(type='button' class='form_button' onclick="location.href='/friendList'") 친구 목록 페이지로 이동
+                            button(type='button' class='form_button' onclick="location.href='/login'") 로그인하기
+                        div(style='height: 10px;')
+                        div
+                            button(type='button' class='form_button' onclick="location.href='/signup'") 다른 이메일로 회원가입하기

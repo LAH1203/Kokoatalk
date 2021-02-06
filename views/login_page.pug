@@ -5,7 +5,7 @@ html
         title Login
         style
             include style.css
-        script(src='/login.js')
+        -//script(src='/login')
     body
         div(id='container' class='main_container')
             div(style='padding: 20px;')
@@ -31,9 +31,11 @@ html
                                 input(type='password' name='password' placeholder='Enter password' class='form_input')
                             div(class='form_text_alert_padding')
                                 div(id='alert_password' class='form_text_alert')
+                        input(type='checkbox' name='autoLogin' value='auto' style='color: gray; font-size: 10px;')
                         div(style='height: 10px;')
                         div
-                            button(type='submit' class='form_button' style='cursor:pointer;') 이메일로 로그인
+                            button(type='submit' class='form_button') 이메일로 로그인
                         div(style='height: 10px;')
                         div
-                            button(type='button' class='form_button' onclick="location.href='/signup'" style='cursor:pointer;') 회원가입
+                            button(type='button' class='form_button' onclick="location.href='/signup'") 회원가입
+        

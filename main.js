@@ -7,6 +7,8 @@ var expressSession = require('express-session');
 var url = require('url');
 var querystring = require('querystring');
 var multer = require('multer');;
+var LocalStorage = require('node-localstorage').LocalStorage;
+localStorage = new LocalStorage('./scratch');
 var app = express();
 
 
@@ -61,8 +63,28 @@ var router = express.Router();
 // });
 
 // 로그인
-app.get(['/', '/login'], function(req, res) {
-    res.render('login_page');
+app.get('/login', function(req, res) {
+    const currentUserEmail = getCurrentUser();
+    // 자동 로그인
+    if (currentUserEmail !== null) {
+        var sql = 'SELECT * FROM users WHERE id = ?';
+        pool.query(sql, [currentUserEmail], function(err, rows){
+            if (err) {
+                console.log(err);
+            } else {
+                var user_in = rows[0];
+                req.session.email = user_in.id;
+                req.session.password = user_in.password;
+                req.session.name = user_in.name;
+                req.session.intro = user_in.intro;
+                req.session.save(function() {
+                    res.redirect('/friendList');
+                });
+            }
+        });
+    } else {
+        res.render('login_page');
+    }
 });
 
 /*router.route('/login').post(function(req, res){
@@ -83,25 +105,30 @@ app.get(['/', '/login'], function(req, res) {
     });
 });*/
 
-app.post('/login', function(req, res){
+app.post('/login', function(req, res) {
     var id = req.body.email || req.query.email;
     var password = req.body.password|| req.query.password;
-    var params = [id]
+    var autoLoginChecked = req.body.autoLogin;
     var sql = 'SELECT * FROM users WHERE id = ?';
     pool.query(sql, [id], function(err, rows){
         if (err) {
             console.log(err);
         }
         if (rows == 0) {
-            console.log('일치하는 사용자 없음');
+            // console.log('일치하는 사용자 없음');
+            res.render('no_user');
         }
         else {
             var user_in = rows[0];
             if(password == user_in.password) {
-                req.session.id = user_in.id;
+                req.session.email = user_in.id;
                 req.session.password = user_in.password;
                 req.session.name = user_in.name;
+                req.session.intro = user_in.intro;
                 req.session.save(function(){
+                    if (autoLoginChecked == 'auto') {
+                        autoLogin(id);
+                    }
                     res.redirect('/loginSuccess');
                 });
             } else {
@@ -129,6 +156,11 @@ app.get('/loginFail', function(req, res) {
     res.render('login_fail');
 });
 
+// 로그아웃
+app.get('/logout', function(req, res) {
+    // 로그아웃 구현 시 세션과 localStorage 정보 모두 삭제 필수!
+});
+
 app.get('/signup', function(req, res) {
     res.render('signup_page');
 });
@@ -154,8 +186,9 @@ app.post('/signup', function(req, res){
                     res.redirect('/signupSuccess');
                 }
             });
-        } else{
-            console.log('이미 추가된 사용자가 있음');
+        } else {
+            // console.log('이미 추가된 사용자가 있음');
+            res.render('already_user');
         }
     });
 });
@@ -170,16 +203,24 @@ app.get('/signupFail', function(req, res) {
 
 // 친구 목록
 app.get('/friendList', function(req, res) {
+    if (!req.session.email) {
+        console.log('로그인되어있지 않음');
+        res.redirect('/login');
+    }
+    console.log(req.session.name, req.session.email);
     // friends라는 배열 안에 DB와 연동하여 친구 목록 넣기
     // 지금은 임시로 friends 배열 생성
-    var friends = ['이아현', '임혜지', '고양이', '야옹'];
-    res.render('friend_list_page', { friend_list: friends });
+    // 마찬가지로 유저 이메일 넣는 friends_email 임시 생성
+    // 두 배열의 순서는 동일해야 함! <- 동일 인덱스를 사용해야 하기 때문
+    var friends = ['이아현', '임혜지', '고양이', '야옹', '개', '멍멍'];
+    var friends_email = ['lah1203@naver.com', 'lhg2615@naver.com', 'lah1203@naver.com', 'lhg2615@naver.com', 'lah1203@naver.com', 'lhg2615@naver.com'];
+    res.render('friend_list_page', { friend_list: friends, friend_email: friends_email, my_name: req.session.name, my_email: req.session.email });
 });
 
 app.get('/addFriend', function(req, res) {
     // users라는 배열 안에 DB와 연동하여 유저 목록 넣기
     // 지금은 임시로 users 배열 생성
-    var users = ['김수한무', '거북이', '두루미'];
+    var users = ['김수한무', '거북이', '두루미', '삼천갑자', '동방삭', '치치카포', '사리사리센타', '워리워리', '세브리깡', '무두셀라', '구름', '허리케인'];
     // query string 이용
     var user_name = req.query.search_name;
     console.log(user_name);
@@ -194,8 +235,60 @@ app.get('/addFriendFail', function(req, res) {
     res.render('add_friend_fail');
 });
 
+// 유저 페이지
+app.get('/userPage', function(req, res) {
+    var email = req.query.email;
+    if (email == req.session.email) {
+        var my_info = {
+            name: req.session.name,
+            email: req.session.email,
+            intro: req.session.intro
+        };
+        res.render('my_profile', { my_info: my_info });
+    } else {
+        // 여기에 mysql 구문을 써야함
+        // 유저 이메일이 있으므로 이메일을 가지고 유저 이름과 이메일, intro를 뽑아냄
+        // 그 뽑아낸 정보를 통째로 전달
+        // 지금은 임시로 생성
+        var user_info = {
+            name: 'hyeji',
+            email: 'lhg2615@naver.com',
+            intro: 'Hi, everyone!'
+        };
+        res.render('user_profile', { user_info: user_info });
+    }
+});
+
+// 친구 삭제
+app.get('/friendDelete', function(req, res) {
+    var email = req.query.email;
+    // 여기서 나와 위 이메일(친구)와의 관계를 끊으면 됨
+    // 즉, mysql에서 친구관계 테이블에서 해당 유저와의 관계를 삭제
+    // 삭제에 성공했다면 friend_delete_success.pug, 실패했다면 friend_delete_fail.pug로 이동
+    // 이번에는 링크를 안 만들었기 때문에 redirect가 아니라 render를 사용해야함!
+});
+
+// 내 정보 수정
+app.get('/updateMyInfo', function(req, res) {
+    res.render('update_my_info_page');
+});
+
+app.post('/updateMyInfo', function(req, res) {
+    // 내 정보 수정 시 받아온 정보로 mysql update!
+});
+
 app.use('/', router);
 
 http.createServer(app).listen(app.get('port'), function() {
     console.log('서버가 시작되었습니다');
-})
+});
+
+function autoLogin(email) {
+    localStorage.setItem('USER_EMAIL', email);
+    console.log(localStorage.getItem('USER_EMAIL'));
+}
+
+function getCurrentUser() {
+    const currentUserEmail = localStorage.getItem('USER_EMAIL');
+    return currentUserEmail;
+}

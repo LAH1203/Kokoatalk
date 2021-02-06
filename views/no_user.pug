@@ -2,7 +2,7 @@ doctype html
 html
     head
         meta(charset='utf-8' name='viewport' content='width=device-width', initial-scale='1.0')
-        title Login Success
+        title 해당 유저 없음
         style
             include style.css
     body
@@ -10,11 +10,11 @@ html
             div(style='padding: 20px;')
             div(class='login_container')
                 div(class='form_container')
-                    form(name='login_success_form' action='/process/loginSuccess' method='get')
+                    form
                         div(style='height: 10px;')
                         img(src='/images/logo.jpg' alt='logo title' class='form_logo_title_div' width='300')
                         div(style='height: 80px;')
-                        div(class='form_message') 로그인에 성공하였습니다
-                        div(style='height: 140px;')
+                        div(class='form_message') 해당 이메일의 유저가 존재하지 않습니다. 회원가입하시겠습니까?
+                        div(style='height: 110px;')
                         div
-                            button(type='button' class='form_button' onclick="location.href='/friendList'") 친구 목록 페이지로 이동
+                            button(type='button' class='form_button' onclick="location.href='/signup'") 회원가입하기
