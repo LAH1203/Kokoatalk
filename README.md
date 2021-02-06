@@ -46,7 +46,7 @@
     + friend_list_page.html
   - 친구 이름 배열과 연결되도록 코드 추가 ver2 - 이아현 (2021-01-18)
   - 친구 목록 ver3 - 이아현 (2021-02-06)
-    + 친구 목록 스크롤뷰 추가
+    + 친구 목록 스크롤뷰 추가(참고 : http://mwultong.blogspot.com/2006/06/html-css-div-scroll-bar.html)
 
 ### 친구 검색/추가/삭제
   - 친구 검색 및 추가 페이지 ver1 - 이아현 (2021-01-22)
@@ -62,7 +62,7 @@
   - 친구 추가 성공/실패 페이지 및 링크 추가 ver3 - 이아현 (2021-01-24)
     + add_friend_success.pug, add_friend_fail.pug
   - 유저 목록 ver4 - 이아현 (2021-02-06)
-    + 유저 목록 스크롤뷰 추가
+    + 유저 목록 스크롤뷰 추가(참고 : http://mwultong.blogspot.com/2006/06/html-css-div-scroll-bar.html)
   - 친구 삭제 구현 ver1 - 이아현 (2021-02-06)
     + user_page.pug
     + 경고 문구 및 링크 구현(DB X)
