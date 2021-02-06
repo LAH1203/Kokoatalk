@@ -227,14 +227,6 @@ app.get('/addFriend', function(req, res) {
     res.render('add_friend_page', { user_list: users, user_name: user_name });
 });
 
-app.get('/addFriendSuccess', function(req, res) {
-    res.render('add_friend_success');
-});
-
-app.get('/addFriendFail', function(req, res) {
-    res.render('add_friend_fail');
-});
-
 // 유저 페이지
 app.get('/userPage', function(req, res) {
     var email = req.query.email;
@@ -257,6 +249,15 @@ app.get('/userPage', function(req, res) {
         };
         res.render('user_profile', { user_info: user_info });
     }
+});
+
+// 친구 추가
+app.get('/friendAdd', function(req, res) {
+    var name = req.query.user_name;
+    // 여기서 나와 위 이름의 친구 추가를 하면 됨
+    // 이메일로 DB에 추가해야하므로 mysql select를 써서 이메일을 알아낸 후 추가
+    // 추가에 성공했다면 add_friend_success.pug, 실패했다면 add_friend_fail.pug로 이동
+    // 이번에는 링크를 안 만들었기 때문에 redirect가 아니라 render를 사용해야함!
 });
 
 // 친구 삭제
