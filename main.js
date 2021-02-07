@@ -218,13 +218,28 @@ app.get('/friendList', function(req, res) {
 });
 
 app.get('/addFriend', function(req, res) {
+    var sql = 'SELECT name FROM users';
+    var users=[];
+    pool.query(sql, function(err, rows, fields){
+        if(err) {
+            console.log(err);
+        } else{
+            for(var i = 0; i<rows.length;i++){
+               // var string = JSON.stringify(rows[i].name);
+              //  users.push(string);
+                users.push(rows[i].name)
+            }
+            var user_name = req.query.search_name;
+            console.log(user_name);
+            console.log(users);
+            res.render('add_friend_page', { user_list: users, user_name: user_name });
+        }
+    });
     // users라는 배열 안에 DB와 연동하여 유저 목록 넣기
     // 지금은 임시로 users 배열 생성
-    var users = ['김수한무', '거북이', '두루미', '삼천갑자', '동방삭', '치치카포', '사리사리센타', '워리워리', '세브리깡', '무두셀라', '구름', '허리케인'];
+    //var users = ['김수한무', '거북이', '두루미'];
     // query string 이용
-    var user_name = req.query.search_name;
-    console.log(user_name);
-    res.render('add_friend_page', { user_list: users, user_name: user_name });
+    
 });
 
 // 유저 페이지
