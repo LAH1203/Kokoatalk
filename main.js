@@ -305,6 +305,41 @@ app.get('/updateMyInfo', function(req, res) {
 
 app.post('/updateMyInfo', function(req, res) {
     // body에서 사용자 정보 받아와서 mysql update 사용해주세요!
+   // var email =  req.session.email;
+    var email = 'lhg2615@naver.com'
+    var name = req.body.name || req.query.name;
+    var intro = req.body.intro || req.query.intro;
+    if (name == null) { // intro만 입력된 경우
+        var sql = 'UPDATE users SET intro = ? WHERE id = ?;'
+        pool.query(sql, [intro, email], function(err, rows){
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('성공');
+            }
+        });
+    }
+    else if (intro == null) { // name만 입력된 경우
+        var sql = 'UPDATE users SET name = ? WHERE id = ?;'
+        pool.query(sql, [name, email], function(err, rows){
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('성공');
+            }
+        });
+    }
+    else { // 둘다 입력된 경우
+        var sql = 'UPDATE users SET intro = ?, name = ? WHERE id = ?;'
+        pool.query(sql, [intro, name, email], function(err, rows){
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('성공');
+            }
+        });
+    }
+
 });
 
 app.post('/updateMyInfo', function(req, res) {
