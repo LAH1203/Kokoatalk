@@ -158,7 +158,13 @@ app.get('/loginFail', function(req, res) {
 
 // 로그아웃
 app.get('/logout', function(req, res) {
-    // 로그아웃 구현 시 세션과 localStorage 정보 모두 삭제 필수!
+    removeUserInfo();
+    req.session.destroy(function(err) {
+        if (err)
+            console.log('로그아웃 실패');
+        else
+            res.redirect('/login');
+    });
 });
 
 app.get('/signup', function(req, res) {
@@ -307,4 +313,8 @@ function autoLogin(email) {
 function getCurrentUser() {
     const currentUserEmail = localStorage.getItem('USER_EMAIL');
     return currentUserEmail;
+}
+
+function removeUserInfo() {
+    localStorage.removeItem('USER_EMAIL');
 }
