@@ -19,7 +19,6 @@
 ### 로그인 및 로그아웃
   - 로그인 창 구현 ver1 - 이아현 (2020-12-30)
     + login_page.html, login.js
-  - mysql 이용 로그인 구현 ver1 - 임혜지 (2021-1-3) 
   - 회원가입 버튼 클릭시 회원가입 페이지로 넘어가는 기능 추가 ver2 - 이아현 (2021-01-04)
   - 로그인 성공/실패 페이지 및 링크 추가 ver3 - 이아현 (2021-01-24)
     + login_success.pug, login_fail.pug
@@ -33,7 +32,6 @@
     + 참고 : https://stackoverflow.com/questions/38295332/pug-jade-input-is-a-self-closing-element-input-but-contains-nested-conten
 
 ### 회원가입
-  - mysql 이용 사용자 추가 기능 구현 ver1 - 임혜지 (2021-1-3)
   - 회원가입 창 구현 ver1 - 이아현 (2021-01-04)
     + signup_page.html
   - 회원가입 성공/실패 창 구현 ver2 - 이아현 (2021-01-04)
@@ -96,7 +94,12 @@
 ### 데이터베이스
   - 연결
     + 로그인
+        - mysql 이용 로그인 구현 ver1 - 임혜지 (2021-01-03) 
     + 회원가입
+        - mysql 이용 사용자 추가 기능 구현 ver1 - 임혜지 (2021-1-3)
+        - info 항목 추가 ver2 - 임혜지 (2021.02.09)
+    + 마이 페이지
+        - 내 정보 수정 ver1 - 임혜지(2021.02.09)
     + 친구 목록
       - 친구 목록 테이블 만들기 ver1 - 임혜지 (2021.02.04)
   - 내부 구조
@@ -120,7 +123,8 @@
   - 데이터베이스 구조 바꾸기 -> 친구 관계 테이블 만들기(내 이메일, 친구 이메일)
   - 친구목록, 사용자목록 연동하기 -> main.js
   - 친구 추가, 친구 삭제, 내 정보 수정, 유저 페이지 sql문 추가 -> main.js
-  - 친구 추가 목록에서 본인 이름 지우기 -> main.js
-  - 회원가입 시 intro 항목 mysql 코드 추가
+    - 내 정보 수정 :white_check_mark:
+  - 친구 추가 목록에서 본인 이름 지우기 -> main.js :white_check_mark:
+  - 회원가입 시 intro 항목 mysql 코드 추가 :white_check_mark:
 ### 아현
   - css 꾸미기
