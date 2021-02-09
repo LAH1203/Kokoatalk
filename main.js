@@ -49,7 +49,7 @@ var router = express.Router();
 app.get('/login', function(req, res) {
     const currentUserEmail = getCurrentUser();
     // 자동 로그인
-    if (currentUserEmail !== null) {
+    if (currentUserEmail == null) {
         var sql = 'SELECT * FROM users WHERE id = ?';
         pool.query(sql, [currentUserEmail], function(err, rows){
             if (err) {
@@ -238,11 +238,13 @@ app.get('/addFriend', function(req, res) {
 
 // 유저 페이지
 app.get('/userPage', function(req, res) {
+    var user_info = {};
     if (!req.session.email) {
         console.log('로그인되어있지 않음');
         res.redirect('/login');
     }
     var email = req.query.email;
+    var email1 = req.session.email;
     if (email == req.session.email) {
         var my_info = {
             name: req.session.name,
@@ -251,16 +253,30 @@ app.get('/userPage', function(req, res) {
         };
         res.render('my_profile', { my_info: my_info });
     } else {
+        var sql = 'SELECT * FROM users WHERE id = ?';
+        pool.query(sql, [email1], function(err, rows){
+            if(err) {
+                console.log('/userPage');
+                console.log(err);
+            } else {
+                var user = rows[0];
+                user_info.name = user.name;
+                user_info.email = user.id;
+                user_info.intro = user.intro;
+                console.log(user_info);
+                res.render('user_profile', { user_info: user_info });
+            }
+        });
         // 여기에 mysql 구문을 써야함
         // 유저 이메일이 있으므로 이메일을 가지고 유저 이름과 이메일, intro를 뽑아냄
         // 그 뽑아낸 정보를 통째로 전달
         // 지금은 임시로 생성
-        var user_info = {
+       /* var user_info = {
             name: 'hyeji',
             email: 'lhg2615@naver.com',
             intro: 'Hi, everyone!'
-        };
-        res.render('user_profile', { user_info: user_info });
+        };*/
+        //res.render('user_profile', { user_info: user_info });
     }
 });
 
