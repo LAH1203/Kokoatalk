@@ -167,8 +167,8 @@ app.post('/signup', function(req, res){
             console.log(err);
         }
         if (rows == 0) { // 이미 저장된 사용자가 없으면
-            var sql1= 'INSERT INTO users (id, name, password) VALUES(?,?,?)';
-            var user_info = [id, name, password];
+            var sql1= 'INSERT INTO users (id, name, password, intro) VALUES(?,?,?,?)';
+            var user_info = [id, name, password, intro];
             pool.query(sql1, user_info, function(err){
                 if(err){
                     console.log(err);
