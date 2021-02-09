@@ -195,7 +195,7 @@ app.get('/signupFail', function(req, res) {
 // 친구 목록
 app.get('/friendList', function(req, res) {
     if (!req.session.email) {
-        // console.log('로그인되어있지 않음');
+        console.log('로그인되어있지 않음');
         res.redirect('/login');
     }
     // friends라는 배열 안에 DB와 연동하여 친구 목록 넣기
@@ -208,6 +208,10 @@ app.get('/friendList', function(req, res) {
 });
 
 app.get('/addFriend', function(req, res) {
+    if (!req.session.email) {
+        console.log('로그인되어있지 않음');
+        res.redirect('/login');
+    }
     var sql = 'SELECT name FROM users';
     var users=[];
     pool.query(sql, function(err, rows, fields){
@@ -234,6 +238,10 @@ app.get('/addFriend', function(req, res) {
 
 // 유저 페이지
 app.get('/userPage', function(req, res) {
+    if (!req.session.email) {
+        console.log('로그인되어있지 않음');
+        res.redirect('/login');
+    }
     var email = req.query.email;
     if (email == req.session.email) {
         var my_info = {
@@ -276,7 +284,11 @@ app.get('/friendDelete', function(req, res) {
 
 // 내 정보 수정
 app.get('/updateMyInfo', function(req, res) {
-    res.render('update_my_info_page');
+    res.render('update_my_info_page', { my_name: req.session.name, my_intro: req.session.intro, my_email: req.session.email });
+});
+
+app.post('/updateMyInfo', function(req, res) {
+    // body에서 사용자 정보 받아와서 mysql update 사용해주세요!
 });
 
 app.post('/updateMyInfo', function(req, res) {

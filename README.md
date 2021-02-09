@@ -29,6 +29,7 @@
   - 로그아웃 ver1 - 이아현 (2021-02-09)
     + main.js
   - 자동 로그인 문구 추가 ver4.1 - 이아현 (2021-02-09)
+    + 참고 : https://stackoverflow.com/questions/38295332/pug-jade-input-is-a-self-closing-element-input-but-contains-nested-conten
 
 ### 회원가입
   - mysql 이용 사용자 추가 기능 구현 ver1 - 임혜지 (2021-1-3)
