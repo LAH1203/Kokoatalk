@@ -214,14 +214,19 @@ app.get('/addFriend', function(req, res) {
     }
     var sql = 'SELECT name FROM users';
     var users=[];
+    var myname = req.session.name;
     pool.query(sql, function(err, rows, fields){
         if(err) {
             console.log(err);
         } else{
             for(var i = 0; i<rows.length;i++){
+                if(rows[i].name == myname)
+                    continue;
+                else
+                    users.push(rows[i].name)    
                // var string = JSON.stringify(rows[i].name);
               //  users.push(string);
-                users.push(rows[i].name)
+                
             }
             var user_name = req.query.search_name;
             console.log(user_name);
