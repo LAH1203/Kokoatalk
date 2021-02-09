@@ -45,23 +45,6 @@ pool.connect();
 var router = express.Router();
 
 
-
-// // 로그인
-// app.get('/login', function(req, res) {
-//     res.render('login_page.html');
-// });
-
-// // 회원가입
-// app.get('/signup', function(req, res) {
-//     res.render('signup_page.html');
-// });
-
-// // 친구 목록
-// app.get('/friendList', function(req, res) {
-//     // 뒤에 쿼리로 친구 수 전달하면 될 것 같습니다.
-//     res.render('friend_list_page.html');
-// });
-
 // 로그인
 app.get('/login', function(req, res) {
     const currentUserEmail = getCurrentUser();
@@ -176,6 +159,8 @@ app.post('/signup', function(req, res){
     var id = req.body.email || req.query.email;
     var name = req.body.name || req.query.name;
     var password = req.body.password||req.query.password;
+    // 요기에 써놓은 intro로 mysql 추가해주시면 됩니다^_^
+    var intro = req.body.intro;
     var sql = 'SELECT * FROM users WHERE id=?';
     pool.query(sql, [id], function(err, rows){
         if (err) {
@@ -210,10 +195,9 @@ app.get('/signupFail', function(req, res) {
 // 친구 목록
 app.get('/friendList', function(req, res) {
     if (!req.session.email) {
-        console.log('로그인되어있지 않음');
+        // console.log('로그인되어있지 않음');
         res.redirect('/login');
     }
-    console.log(req.session.name, req.session.email);
     // friends라는 배열 안에 DB와 연동하여 친구 목록 넣기
     // 지금은 임시로 friends 배열 생성
     // 마찬가지로 유저 이메일 넣는 friends_email 임시 생성
