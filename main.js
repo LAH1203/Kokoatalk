@@ -49,7 +49,7 @@ var router = express.Router();
 app.get('/login', function(req, res) {
     const currentUserEmail = getCurrentUser();
     // 자동 로그인
-    if (currentUserEmail == null) {
+    if (currentUserEmail !== null) {
         var sql = 'SELECT * FROM users WHERE id = ?';
         pool.query(sql, [currentUserEmail], function(err, rows){
             if (err) {
@@ -234,10 +234,6 @@ app.get('/addFriend', function(req, res) {
             res.render('add_friend_page', { user_list: users, user_name: user_name });
         }
     });
-    // users라는 배열 안에 DB와 연동하여 유저 목록 넣기
-    // 지금은 임시로 users 배열 생성
-    //var users = ['김수한무', '거북이', '두루미'];
-    // query string 이용
     
 });
 
@@ -249,40 +245,23 @@ app.get('/userPage', function(req, res) {
         res.redirect('/login');
     }
     var email = req.query.email;
-    var email1 = req.session.email;
-    if (email == req.session.email) {
-        var my_info = {
-            name: req.session.name,
-            email: req.session.email,
-            intro: req.session.intro
-        };
-        res.render('my_profile', { my_info: my_info });
-    } else {
-        var sql = 'SELECT * FROM users WHERE id = ?';
-        pool.query(sql, [email1], function(err, rows){
-            if(err) {
-                console.log('/userPage');
-                console.log(err);
-            } else {
-                var user = rows[0];
-                user_info.name = user.name;
-                user_info.email = user.id;
-                user_info.intro = user.intro;
-                console.log(user_info);
+    var sql = 'SELECT * FROM users WHERE id = ?';
+    pool.query(sql, [email], function(err, rows){
+        if (err) {
+            console.log('/userPage');
+            console.log(err);
+        } else {
+            var user = rows[0];
+            user_info.name = user.name;
+            user_info.email = user.id;
+            user_info.intro = user.intro;
+            console.log(user_info);
+            if (email == req.session.email)
+                res.render('my_profile', { my_info: user_info });
+            else
                 res.render('user_profile', { user_info: user_info });
-            }
-        });
-        // 여기에 mysql 구문을 써야함
-        // 유저 이메일이 있으므로 이메일을 가지고 유저 이름과 이메일, intro를 뽑아냄
-        // 그 뽑아낸 정보를 통째로 전달
-        // 지금은 임시로 생성
-       /* var user_info = {
-            name: 'hyeji',
-            email: 'lhg2615@naver.com',
-            intro: 'Hi, everyone!'
-        };*/
-        //res.render('user_profile', { user_info: user_info });
-    }
+        }
+    });
 });
 
 // 친구 추가
@@ -310,8 +289,8 @@ app.get('/updateMyInfo', function(req, res) {
 
 app.post('/updateMyInfo', function(req, res) {
     // body에서 사용자 정보 받아와서 mysql update 사용해주세요!
-   // var email =  req.session.email;
-    var email = 'lhg2615@naver.com'
+    var email =  req.session.email;
+    // var email = 'lhg2615@naver.com';
     var name = req.body.name || req.query.name;
     var intro = req.body.intro || req.query.intro;
     if (name == null) { // intro만 입력된 경우
@@ -320,7 +299,8 @@ app.post('/updateMyInfo', function(req, res) {
             if (err) {
                 console.log(err);
             } else {
-                console.log('성공');
+                // console.log('성공');
+                res.redirect('/userPage?email=' + email);
             }
         });
     }
@@ -330,7 +310,8 @@ app.post('/updateMyInfo', function(req, res) {
             if (err) {
                 console.log(err);
             } else {
-                console.log('성공');
+                // console.log('성공');
+                res.redirect('/userPage?email=' + email);
             }
         });
     }
@@ -340,15 +321,12 @@ app.post('/updateMyInfo', function(req, res) {
             if (err) {
                 console.log(err);
             } else {
-                console.log('성공');
+                // console.log('성공');
+                res.redirect('/userPage?email=' + email);
             }
         });
     }
 
-});
-
-app.post('/updateMyInfo', function(req, res) {
-    // 내 정보 수정 시 받아온 정보로 mysql update!
 });
 
 app.use('/', router);
