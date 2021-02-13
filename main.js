@@ -267,10 +267,30 @@ app.get('/userPage', function(req, res) {
 // 친구 추가
 app.get('/friendAdd', function(req, res) {
     var name = req.query.user_name;
+    var friendid = 'lhg2615@naver.com'; // 어떤 친구를 눌렀는지 어떻게알죠...??????ㅠㅠㅠㅠㅠㅠㅠㅠ
     // 여기서 나와 위 이름의 친구 추가를 하면 됨
     // 이메일로 DB에 추가해야하므로 mysql select를 써서 이메일을 알아낸 후 추가
     // 추가에 성공했다면 add_friend_success.pug, 실패했다면 add_friend_fail.pug로 이동
     // 이번에는 링크를 안 만들었기 때문에 redirect가 아니라 render를 사용해야함!
+    var sql = 'SELECT id FROM users WHERE name=?';
+    pool.query(sql, [name], function(err, rows){
+        if (err) {
+            console.log(err);
+        } else {
+            var myname = rows[0];
+            var sql1= 'INSERT INTO friend (my_id, friend_id) VALUES(?,?)';
+            pool.query(sql1, [myname, friendid], function(err, rows){
+                if (err) {
+                    console.log(err);
+                    res.render('/add_friend_fail');
+                } else {
+                    res.render('/add_friend_success');
+                }
+            });
+        }
+
+    });
+
 });
 
 // 친구 삭제
