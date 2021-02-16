@@ -203,8 +203,9 @@ app.get('/friendList', function(req, res) {
     // 마찬가지로 유저 이메일 넣는 friends_email 임시 생성
     // 두 배열의 순서는 동일해야 함! <- 동일 인덱스를 사용해야 하기 때문
     var friends = ['이아현', '임혜지', '고양이', '야옹', '개', '멍멍'];
-    var friends_email = ['lah1203@naver.com', 'lhg2615@naver.com', 'lah1203@naver.com', 'lhg2615@naver.com', 'lah1203@naver.com', 'lhg2615@naver.com'];
-    res.render('friend_list_page', { friend_list: friends, friend_email: friends_email, my_name: req.session.name, my_email: req.session.email });
+    // var friends_email = ['lah1203@naver.com', 'lhg2615@naver.com', 'lah1203@naver.com', 'lhg2615@naver.com', 'lah1203@naver.com', 'lhg2615@naver.com'];
+    // res.render('friend_list_page', { friend_list: friends, friend_email: friends_email, my_name: req.session.name, my_email: req.session.email });
+    res.render('friend_list_page', { friend_list: friends, my_name: req.session.name });
 });
 
 app.get('/addFriend', function(req, res) {
@@ -244,9 +245,9 @@ app.get('/userPage', function(req, res) {
         console.log('로그인되어있지 않음');
         res.redirect('/login');
     }
-    var email = req.query.email;
-    var sql = 'SELECT * FROM users WHERE id = ?';
-    pool.query(sql, [email], function(err, rows){
+    var name = req.query.name;
+    var sql = 'SELECT * FROM users WHERE name = ?';
+    pool.query(sql, [name], function(err, rows){
         if (err) {
             console.log('/userPage');
             console.log(err);

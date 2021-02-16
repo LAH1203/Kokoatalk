@@ -5,13 +5,13 @@ function startChatting(friend) {
 }
 
 // 마이페이지 함수
-function goToMyPage(email) {
-    var link = 'http://localhost:3000/userPage?email=' + email;
+function goToMyPage(name) {
+    var link = 'http://localhost:3000/userPage?name=' + name;
     location.href = link;
 }
 
 // 유저 페이지 함수
-function goToUserPage(email) {
-    var link = 'http://localhost:3000/userPage?email=' + email;
+function goToUserPage(name) {
+    var link = 'http://localhost:3000/userPage?name=' + name;
     location.href = link;
 }
