@@ -1,0 +1,22 @@
+doctype html
+html
+    head
+        meta(charset='utf-8' name='viewport' content='width=device-width', initial-scale='1.0')
+        title Chatting
+        style
+            include style.css
+        script(src='chatting.js') 
+    body
+        div(id='container' class='main_container')
+            div(style='padding: 20px;')
+            div(class='login_container')
+                div(class='form_container')
+                    form(name='chatting_form' action='/chatting' method='get')
+                        div(style='height: 10px;')
+                        center
+                            div(class='form_title_p' data-role='header') 채팅
+                        br
+                        br
+                        div(class='chatting')
+                        input(type='text' id='chat' placeholder='메시지 입력')
+                        button(onclick='send()') 전송

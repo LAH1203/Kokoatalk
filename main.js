@@ -4,12 +4,13 @@ var fs = require('fs');
 var cors = require('cors');
 var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
+// socket.io 모듈 -> 채팅 시 써먹음
+const socket = require('socket.io');
 var url = require('url');
 var querystring = require('querystring');
 var multer = require('multer');;
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
-var sync_mysql = require('sync-mysql');
 var app = express();
 
 
@@ -45,6 +46,7 @@ var pool = mysql.createConnection({
 pool.connect();
 
 // 동기식 mysql
+var sync_mysql = require('sync-mysql');
 var sync_pool = new sync_mysql({
     connectionLimit : 10,
     host : 'localhost',
@@ -183,7 +185,7 @@ app.post('/signup', function(req, res) {
             check = 0;
         }
     }
-    
+
     if (check == 0) {
         res.render('same_name_error_page');
     } else {
@@ -377,10 +379,28 @@ app.post('/updateMyInfo', function(req, res) {
 
 });
 
+app.get('/chatting', function(req, res) {
+    if (!req.session.name) {
+        console.log('로그인되어있지 않음');
+        res.redirect('/login');
+    }
+    var friend_name = req.query.friend_name;
+    var my_name = req.session.name;
+    // 내 이름과 친구 이름으로 채팅 시작!
+    res.render('chatting_page');
+});
+
+
+
 app.use('/', router);
 
-http.createServer(app).listen(app.get('port'), function() {
-    console.log('서버가 시작되었습니다');
+const server = http.createServer(app);
+
+// 생성된 서버를 socket.io에 바인딩
+const io = socket(server);
+
+server.listen(app.get('port'), function() {
+    console.log('서버가 시작되었습니다.');
 });
 
 function autoLogin(email) {
