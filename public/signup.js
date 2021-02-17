@@ -1,3 +1,4 @@
+/*
 // const { DEFAULT_FAILURE_POLICY } = require("firebase-functions");
 // const { user } = require("firebase-functions/lib/providers/auth");
 var addUser = function(id, name, password, callback) {
@@ -180,3 +181,20 @@ function checkValidName(form) {
     }
     return true;
 }
+*/
+
+function refreshDiv(users_name) {
+    window.setInterval('refreshDiv()', 1000);
+    var form = document.signup_form;
+    for (i in users_name) {
+        if (users_name[i] == form.name.value) {
+            form.email.style.border = '2px solid';
+            form.email.style.borderColor = '#FF0000';
+            document.getElementById('alert_name').style.color = '#FF0000';
+            document.getElementById('alert_name').innerText = "해당 이름은 이미 존재합니다.";
+            return;
+        }
+    }
+}
+
+refreshDiv(users_name);

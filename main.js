@@ -9,6 +9,7 @@ var querystring = require('querystring');
 var multer = require('multer');;
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
+var sync_mysql = require('sync-mysql');
 var app = express();
 
 
@@ -42,6 +43,17 @@ var pool = mysql.createConnection({
     debug : false
 });
 pool.connect();
+
+// 동기식 mysql
+var sync_pool = new sync_mysql({
+    connectionLimit : 10,
+    host : 'localhost',
+    user :'kokoatalk',
+    password : '00000',
+    database : 'kokoatalk',
+    debug : false
+});
+
 var router = express.Router();
 
 
@@ -155,33 +167,48 @@ app.get('/signup', function(req, res) {
 });
 
 // 회원가입
-app.post('/signup', function(req, res){
+app.post('/signup', function(req, res) {
     var id = req.body.email || req.query.email;
     var name = req.body.name || req.query.name;
     var password = req.body.password||req.query.password;
-    // 요기에 써놓은 intro로 mysql 추가해주시면 됩니다^_^
     var intro = req.body.intro;
-    var sql = 'SELECT * FROM users WHERE id=?';
-    pool.query(sql, [id], function(err, rows){
-        if (err) {
-            console.log(err);
+    var check = 1;
+    // 동기식 mysql문으로 유저 이름 겹치는지 아닌지 검사
+    var sql = 'SELECT name FROM users';
+    var users_name = sync_pool.query('SELECT name FROM users');
+    // console.log(users_name);
+    for (var i = 0; i < users_name.length; i++) {
+        // console.log(users_name[i].name);
+        if (users_name[i].name == name) {
+            check = 0;
         }
-        if (rows == 0) { // 이미 저장된 사용자가 없으면
-            var sql1= 'INSERT INTO users (id, name, password, intro) VALUES(?,?,?,?)';
-            var user_info = [id, name, password, intro];
-            pool.query(sql1, user_info, function(err){
-                if(err){
-                    console.log(err);
-                    res.redirect('/signupFail');
-                } else{
-                    res.redirect('/signupSuccess');
-                }
-            });
-        } else {
-            // console.log('이미 추가된 사용자가 있음');
-            res.render('already_user');
-        }
-    });
+    }
+    
+    if (check == 0) {
+        res.render('same_name_error_page');
+    } else {
+        sql = 'SELECT * FROM users WHERE id=?';
+        pool.query(sql, [id], function(err, rows){
+            if (err) {
+                console.log(err);
+            }
+            if (rows == 0) { // 이미 저장된 사용자가 없으면
+                var sql1= 'INSERT INTO users (id, name, password, intro) VALUES(?,?,?,?)';
+                var user_info = [id, name, password, intro];
+                pool.query(sql1, user_info, function(err){
+                    if(err){
+                        console.log(err);
+                        res.redirect('/signupFail');
+                    } else{
+                        res.redirect('/signupSuccess');
+                    }
+                });
+            } else {
+                // console.log('이미 추가된 사용자가 있음');
+                res.render('already_user');
+            }
+        });
+    }
 });
 
 app.get('/signupSuccess', function(req, res) {
@@ -205,7 +232,7 @@ app.get('/friendList', function(req, res) {
     var friends = ['이아현', '임혜지', '고양이', '야옹', '개', '멍멍'];
     // var friends_email = ['lah1203@naver.com', 'lhg2615@naver.com', 'lah1203@naver.com', 'lhg2615@naver.com', 'lah1203@naver.com', 'lhg2615@naver.com'];
     // res.render('friend_list_page', { friend_list: friends, friend_email: friends_email, my_name: req.session.name, my_email: req.session.email });
-    res.render('friend_list_page', { friend_list: friends, my_name: req.session.name });
+    res.render('friend_list_page', { friend_name: friends, my_name: req.session.name });
 });
 
 app.get('/addFriend', function(req, res) {
