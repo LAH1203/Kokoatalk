@@ -12,7 +12,7 @@ var multer = require('multer');;
 var LocalStorage = require('node-localstorage').LocalStorage;
 localStorage = new LocalStorage('./scratch');
 var app = express();
-
+const moment = require('moment');
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', './views');
@@ -23,6 +23,7 @@ app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
 // app.use('/public',static(path.join(__dirname, 'public')));
 app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, "public")));
 app.use('/public',static(path.join(__dirname, 'views')));
 app.use(cookieParser());
 app.use(expressSession({
@@ -58,7 +59,6 @@ var sync_pool = new sync_mysql({
 
 var router = express.Router();
 
-
 // 로그인
 app.get('/login', function(req, res) {
     const currentUserEmail = getCurrentUser();
@@ -83,24 +83,6 @@ app.get('/login', function(req, res) {
         res.render('login_page');
     }
 });
-
-/*router.route('/login').post(function(req, res){
-    console.log('.post login 호출');
-    var user = {
-        id : req.body.email || req.query.email,
-        password : req.body.password|| req.query.password
-    }
-    var sql = 'SELECT * FROM users WHERE id = ?, password = ?';
-    pool.query(sql, user, function(err, results){
-        console.log('login');
-        if(err){
-            console.log(err);
-            res.redirect('/loginFail');
-        } else{
-            res.redirect('/loginSuccess');
-        }
-    });
-});*/
 
 app.post('/login', function(req, res) {
     var id = req.body.email || req.query.email;
@@ -460,6 +442,19 @@ const server = http.createServer(app);
 
 // 생성된 서버를 socket.io에 바인딩
 const io = socket(server);
+
+io.on("connection", (socket)=> {
+    console.log("연결이 이루어짐");
+    socket.on("chatting", (data)=> {
+        const { name, msg } = data;
+
+        io.emit("chatting", {
+            name: name,
+            msg: msg,
+            time: moment(new Date()).format("h:ss A")
+        });
+    })
+})
 
 server.listen(app.get('port'), function() {
     console.log('서버가 시작되었습니다.');
