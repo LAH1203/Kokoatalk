@@ -227,14 +227,28 @@ app.get('/friendList', function(req, res) {
         console.log('로그인되어있지 않음');
         res.redirect('/login');
     }
+    var myemail = req.session.email;
+    var friends = [];
+    var sql = 'SELECT friend_id FROM friend where my_id = ?';
+    pool.query(sql, [myemail], function(err, rows){
+        if (err) {
+            console.log(err);
+        } else {
+            for(var i = 0; i<rows.length; i++) {
+                friends.push(rows[i].friend_id);
+                console.log(friends);
+            }
+            res.render('friend_list_page', { friend_name: friends, my_name: req.session.name });
+        }
+    });
     // friends라는 배열 안에 DB와 연동하여 친구 목록 넣기
     // 지금은 임시로 friends 배열 생성
     // 마찬가지로 유저 이메일 넣는 friends_email 임시 생성
     // 두 배열의 순서는 동일해야 함! <- 동일 인덱스를 사용해야 하기 때문
-    var friends = ['이아현', '임혜지', '고양이', '야옹', '개', '멍멍'];
+    //var friends = ['이아현', '임혜지', '고양이', '야옹', '개', '멍멍'];
     // var friends_email = ['lah1203@naver.com', 'lhg2615@naver.com', 'lah1203@naver.com', 'lhg2615@naver.com', 'lah1203@naver.com', 'lhg2615@naver.com'];
     // res.render('friend_list_page', { friend_list: friends, friend_email: friends_email, my_name: req.session.name, my_email: req.session.email });
-    res.render('friend_list_page', { friend_name: friends, my_name: req.session.name });
+    
 });
 
 app.get('/addFriend', function(req, res) {
@@ -297,24 +311,33 @@ app.get('/userPage', function(req, res) {
 // 친구 추가
 app.get('/friendAdd', function(req, res) {
     var name = req.query.user_name;
-    var friendid = 'lhg2615@naver.com'; // 어떤 친구를 눌렀는지 어떻게알죠...??????ㅠㅠㅠㅠㅠㅠㅠㅠ
+    var email = req.session.email;
     // 여기서 나와 위 이름의 친구 추가를 하면 됨
     // 이메일로 DB에 추가해야하므로 mysql select를 써서 이메일을 알아낸 후 추가
     // 추가에 성공했다면 add_friend_success.pug, 실패했다면 add_friend_fail.pug로 이동
     // 이번에는 링크를 안 만들었기 때문에 redirect가 아니라 render를 사용해야함!
-    var sql = 'SELECT id FROM users WHERE name=?';
+    var sql = 'SELECT id FROM users WHERE name=?'; // email 알아내기 (친구의)
     pool.query(sql, [name], function(err, rows){
         if (err) {
             console.log(err);
         } else {
-            var myname = rows[0];
+            var friendid = rows[0].id;
+            console.log('friend id = ', friendid);
             var sql1= 'INSERT INTO friend (my_id, friend_id) VALUES(?,?)';
-            pool.query(sql1, [myname, friendid], function(err, rows){
+            pool.query(sql1, [email, friendid], function(err, rows){
                 if (err) {
                     console.log(err);
-                    res.render('/add_friend_fail');
+                    res.render('add_friend_fail');
                 } else {
-                    res.render('/add_friend_success');
+                    var sql2= 'INSERT INTO friend (my_id, friend_id) VALUES(?,?)';
+                    pool.query(sql2, [friendid, email], function(err, rows){
+                        if (err) {
+                            console.log(err);
+                            res.render('add_friend_fail');
+                        } else {
+                            res.render('add_friend_success');
+                        }
+                    });     
                 }
             });
         }
@@ -326,10 +349,29 @@ app.get('/friendAdd', function(req, res) {
 // 친구 삭제
 app.get('/friendDelete', function(req, res) {
     var email = req.query.email;
+    var myemail = req.session.email;
+    var sql = 'DELETE FROM friend Where my_id = ? and friend_id = ?';
+    pool.query(sql, [myemail, email], function(err, rows){
+        if (err) {
+            console.log(err);
+            res.render('friend_delete_fail');
+        } else {
+            var sql2 ='DELETE FROM friend Where my_id = ? and friend_id = ?';
+            pool.query(sql2, [email, myemail], function(err, rows){
+                if (err) {
+                    res.render('friend_delete_fail');
+                } else {
+                    res.render('friend_delete_success');
+                }
+            });
+            
+        }
+    });
     // 여기서 나와 위 이메일(친구)와의 관계를 끊으면 됨
     // 즉, mysql에서 친구관계 테이블에서 해당 유저와의 관계를 삭제
     // 삭제에 성공했다면 friend_delete_success.pug, 실패했다면 friend_delete_fail.pug로 이동
     // 이번에는 링크를 안 만들었기 때문에 redirect가 아니라 render를 사용해야함!
+
 });
 
 // 내 정보 수정
