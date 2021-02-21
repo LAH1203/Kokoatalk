@@ -229,15 +229,34 @@ app.get('/friendList', function(req, res) {
     }
     var myemail = req.session.email;
     var friends = [];
+    var friends_id = [];
     var sql = 'SELECT friend_id FROM friend where my_id = ?';
+    var friends = [];
     pool.query(sql, [myemail], function(err, rows){
         if (err) {
             console.log(err);
         } else {
+            var friends = [];
             for(var i = 0; i<rows.length; i++) {
-                friends.push(rows[i].friend_id);
-                console.log(friends);
+                friends_id.push(rows[i].friend_id);
+                console.log(friends_id);
             }
+            for(var j = 0; j< friends_id.length; j++) {
+                var sql1 = 'SELECT name FROM users WHERE id = ?';
+                //var friends = [];
+                var friendsid = friends_id[j];
+                //console.log(friendsid);
+                pool.query(sql1, [friendsid], function(err, rows){
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        friends.push(rows[0].name);
+                        //console.log(friends);
+                    }
+                });
+               // console.log(friends);
+            }
+            console.log(friends);
             res.render('friend_list_page', { friend_name: friends, my_name: req.session.name });
         }
     });
@@ -250,6 +269,7 @@ app.get('/friendList', function(req, res) {
     // res.render('friend_list_page', { friend_list: friends, friend_email: friends_email, my_name: req.session.name, my_email: req.session.email });
     
 });
+
 
 app.get('/addFriend', function(req, res) {
     if (!req.session.email) {
