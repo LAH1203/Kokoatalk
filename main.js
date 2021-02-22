@@ -22,8 +22,8 @@ app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
 // app.use('/public',static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static('public'));
-app.use(express.static(path.join(__dirname, "public")));
 app.use('/public',static(path.join(__dirname, 'views')));
 app.use(cookieParser());
 app.use(expressSession({
@@ -205,9 +205,26 @@ app.get('/signupFail', function(req, res) {
 
 // 친구 목록
 app.get('/friendList', function(req, res) {
-    if (!req.session.email) {
+    if (!getCurrentUser()) {
         console.log('로그인되어있지 않음');
         res.redirect('/login');
+    } else {
+        var sql = 'SELECT * FROM users WHERE id = ?';
+        pool.query(sql, [getCurrentUser()], function(err, rows){
+            if (err) {
+                console.log(err);
+            } else {
+                var user_in = rows[0];
+                req.session.email = user_in.id;
+                req.session.password = user_in.password;
+                req.session.name = user_in.name;
+                req.session.intro = user_in.intro;
+                req.session.save(function() {
+                    // res.redirect('/friendList');
+                    console.log('자동로그인');
+                });
+            }
+        });
     }
     var myemail = req.session.email;
     var friends = [];
@@ -254,9 +271,26 @@ app.get('/friendList', function(req, res) {
 
 
 app.get('/addFriend', function(req, res) {
-    if (!req.session.email) {
+    if (!getCurrentUser()) {
         console.log('로그인되어있지 않음');
         res.redirect('/login');
+    } else {
+        var sql = 'SELECT * FROM users WHERE id = ?';
+        pool.query(sql, [getCurrentUser()], function(err, rows){
+            if (err) {
+                console.log(err);
+            } else {
+                var user_in = rows[0];
+                req.session.email = user_in.id;
+                req.session.password = user_in.password;
+                req.session.name = user_in.name;
+                req.session.intro = user_in.intro;
+                req.session.save(function() {
+                    // res.redirect('/addFriend');
+                    console.log('자동로그인');
+                });
+            }
+        });
     }
     var sql = 'SELECT name FROM users';
     var users=[];
@@ -285,11 +319,28 @@ app.get('/addFriend', function(req, res) {
 
 // 유저 페이지
 app.get('/userPage', function(req, res) {
-    var user_info = {};
-    if (!req.session.email) {
+    if (!getCurrentUser()) {
         console.log('로그인되어있지 않음');
         res.redirect('/login');
+    } else {
+        var sql = 'SELECT * FROM users WHERE id = ?';
+        pool.query(sql, [getCurrentUser()], function(err, rows){
+            if (err) {
+                console.log(err);
+            } else {
+                var user_in = rows[0];
+                req.session.email = user_in.id;
+                req.session.password = user_in.password;
+                req.session.name = user_in.name;
+                req.session.intro = user_in.intro;
+                req.session.save(function() {
+                    // res.redirect('/userPage');
+                    console.log('자동로그인');
+                });
+            }
+        });
     }
+    var user_info = {};
     var name = req.query.name;
     var sql = 'SELECT * FROM users WHERE name = ?';
     pool.query(sql, [name], function(err, rows){
@@ -302,7 +353,7 @@ app.get('/userPage', function(req, res) {
             user_info.email = user.id;
             user_info.intro = user.intro;
             console.log(user_info);
-            if (email == req.session.email)
+            if (user_info.email == req.session.email)
                 res.render('my_profile', { my_info: user_info });
             else
                 res.render('user_profile', { user_info: user_info });
@@ -350,6 +401,27 @@ app.get('/friendAdd', function(req, res) {
 
 // 친구 삭제
 app.get('/friendDelete', function(req, res) {
+    if (!getCurrentUser()) {
+        console.log('로그인되어있지 않음');
+        res.redirect('/login');
+    } else {
+        var sql = 'SELECT * FROM users WHERE id = ?';
+        pool.query(sql, [getCurrentUser()], function(err, rows){
+            if (err) {
+                console.log(err);
+            } else {
+                var user_in = rows[0];
+                req.session.email = user_in.id;
+                req.session.password = user_in.password;
+                req.session.name = user_in.name;
+                req.session.intro = user_in.intro;
+                req.session.save(function() {
+                    // res.redirect('/friendDelete');
+                    console.log('자동로그인');
+                });
+            }
+        });
+    }
     var email = req.query.email;
     var myemail = req.session.email;
     var sql = 'DELETE FROM friend Where my_id = ? and friend_id = ?';
@@ -378,6 +450,27 @@ app.get('/friendDelete', function(req, res) {
 
 // 내 정보 수정
 app.get('/updateMyInfo', function(req, res) {
+    if (!getCurrentUser()) {
+        console.log('로그인되어있지 않음');
+        res.redirect('/login');
+    } else {
+        var sql = 'SELECT * FROM users WHERE id = ?';
+        pool.query(sql, [getCurrentUser()], function(err, rows){
+            if (err) {
+                console.log(err);
+            } else {
+                var user_in = rows[0];
+                req.session.email = user_in.id;
+                req.session.password = user_in.password;
+                req.session.name = user_in.name;
+                req.session.intro = user_in.intro;
+                req.session.save(function() {
+                    // res.redirect('/updateMyInfo');
+                    console.log('자동로그인');
+                });
+            }
+        });
+    }
     res.render('update_my_info_page', { my_name: req.session.name, my_intro: req.session.intro, my_email: req.session.email });
 });
 
@@ -424,37 +517,54 @@ app.post('/updateMyInfo', function(req, res) {
 });
 
 app.get('/chatting', function(req, res) {
-    if (!req.session.name) {
+    if (!getCurrentUser()) {
         console.log('로그인되어있지 않음');
         res.redirect('/login');
+    } else {
+        var sql = 'SELECT * FROM users WHERE id = ?';
+        pool.query(sql, [getCurrentUser()], function(err, rows){
+            if (err) {
+                console.log(err);
+            } else {
+                var user_in = rows[0];
+                req.session.email = user_in.id;
+                req.session.password = user_in.password;
+                req.session.name = user_in.name;
+                req.session.intro = user_in.intro;
+                req.session.save(function() {
+                    // res.redirect('/chatting');
+                    console.log('자동로그인');
+                });
+            }
+        });
     }
     var friend_name = req.query.friend_name;
     var my_name = req.session.name;
     // 내 이름과 친구 이름으로 채팅 시작!
-    res.render('chatting_page');
+    res.render('chatting_page', { my_name: my_name, friend_name: friend_name });
 });
-
 
 
 app.use('/', router);
 
 const server = http.createServer(app);
 
-// 생성된 서버를 socket.io에 바인딩
 const io = socket(server);
-
-io.on("connection", (socket)=> {
+io.sockets.on("connection", (socket)=> {
     console.log("연결이 이루어짐");
     socket.on("chatting", (data)=> {
         const { name, msg } = data;
-
-        io.emit("chatting", {
+        console.log(msg);
+        io.sockets.emit("chatting", {
             name: name,
             msg: msg,
             time: moment(new Date()).format("h:ss A")
         });
-    })
-})
+    });
+    socket.on('disconnect', function(data) {
+        console.log('disconnected');
+    });
+});
 
 server.listen(app.get('port'), function() {
     console.log('서버가 시작되었습니다.');
