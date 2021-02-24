@@ -266,9 +266,9 @@ app.get('/friendList', function(req, res) {
         //console.log(friends_id);
         const result1 = sync_pool.query('SELECT name FROM users WHERE id = ?', [result[i].friend_id]);
         friends.push(result1[0].name);
-        console.log('네임', friends_name);
+        //console.log('네임', friends_name);
     }
-    console.log(friends_name);
+    //console.log(friends_name);
     
     res.render('friend_list_page', { friend_name: friends, my_name: req.session.name });
     // friends라는 배열 안에 DB와 연동하여 친구 목록 넣기
@@ -309,22 +309,40 @@ app.get('/addFriend', function(req, res) {
     var sql = 'SELECT name FROM users';
     var users=[];
     var myname = req.session.name;
+    var myemail = req.session.email;
+    var friendid=[];
+    var friend_name=[];
+    const result = sync_pool.query('SELECT friend_id FROM friend where my_id = ?', [myemail]);
+    //console.log(result.friend_id);
+    for (var i = 0; i<result.length; i++) {
+        friendid.push(result[i].friend_id);
+    }
+    //console.log(friendid);
+    for(var i = 0; i<friendid.length; i++) {
+        const result1 = sync_pool.query('SELECT name FROM users WHERE id = ?', [friendid[i]]);
+        friend_name.push(result1[0].name);
+    }
+    //console.log('네임', friend_name);
     pool.query(sql, function(err, rows, fields){
         if(err) {
             console.log(err);
         } else{
             for(var i = 0; i<rows.length;i++){
+               // console.log(rows[i].name);
                 if(rows[i].name == myname)
                     continue;
+                if(friend_name.indexOf(rows[i].name) != -1) {
+                   // console.log(friend_name.indexOf(rows[i].name));
+                    continue;
+                }    
                 else
-                    users.push(rows[i].name)    
-               // var string = JSON.stringify(rows[i].name);
-              //  users.push(string);
+                    users.push(rows[i].name) 
+                   // console.log(users);   
                 
             }
             var user_name = req.query.search_name;
-            console.log(user_name);
-            console.log(users);
+            //console.log(user_name);
+            //console.log(users);
             res.render('add_friend_page', { user_list: users, user_name: user_name });
         }
     });
