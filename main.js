@@ -49,16 +49,20 @@ pool.connect();
 // 동기식 mysql
 var sync_mysql = require('sync-mysql');
 var sync_pool = new sync_mysql({
-    connectionLimit : 10,
     host : 'localhost',
     user :'kokoatalk',
     password : '00000',
-    database : 'kokoatalk',
-    debug : false
+    database : 'kokoatalk'
 });
-
 var router = express.Router();
 
+const mysql1 = require('mysql2/promise');
+const mysql1_pool = mysql1.createPool({
+	host : 'localhost',
+    user :'kokoatalk',
+    password : '00000',
+    database : 'kokoatalk'
+});
 // 로그인
 app.get('/login', function(req, res) {
     const currentUserEmail = getCurrentUser();
@@ -209,6 +213,28 @@ app.get('/friendList', function(req, res) {
         console.log('로그인되어있지 않음');
         res.redirect('/login');
     } 
+    /*
+    const dbTest = async () => {
+        try {
+            const connection = await mysql1_pool.getConnection(async conn => conn);
+            try{
+                var myemail = req.session.email;
+                const [rows] = await connection.query('SELECT friend_id FROM friend where my_id = ?', [myemail]);
+                connection.release();
+                return rows;
+
+            } catch(err) {
+                console.log('query error')
+            }
+        } catch(err) {
+            console.log('db error')
+        }
+    }
+    
+    var rows = dbTest();
+    rows.then((row)=>{
+        console.log(row);
+    }) */
     // else {
     //     var sql = 'SELECT * FROM users WHERE id = ?';
     //     pool.query(sql, [getCurrentUser()], function(err, rows){
@@ -227,39 +253,24 @@ app.get('/friendList', function(req, res) {
     //         }
     //     });
     // }
+    
     var myemail = req.session.email;
     var friends = [];
-    var friends_id = [];
+    var friends_name = [];
     var sql = 'SELECT friend_id FROM friend where my_id = ?';
     var friends = [];
-    pool.query(sql, [myemail], function(err, rows){
-        if (err) {
-            console.log(err);
-        } else {
-            var friends = [];
-            for(var i = 0; i<rows.length; i++) {
-                friends_id.push(rows[i].friend_id);
-                console.log(friends_id);
-            }
-            for(var j = 0; j< friends_id.length; j++) {
-                var sql1 = 'SELECT name FROM users WHERE id = ?';
-                //var friends = [];
-                var friendsid = friends_id[j];
-                //console.log(friendsid);
-                pool.query(sql1, [friendsid], function(err, rows){
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        friends.push(rows[0].name);
-                        //console.log(friends);
-                    }
-                });
-               // console.log(friends);
-            }
-            console.log(friends);
-            res.render('friend_list_page', { friend_name: friends, my_name: req.session.name });
-        }
-    });
+    const result = sync_pool.query('SELECT friend_id FROM friend where my_id = ?', [myemail]);
+    //console.log(result);
+    for(var i = 0; i<result.length; i++) {
+        //friends_id.push(result[i].friend_id);
+        //console.log(friends_id);
+        const result1 = sync_pool.query('SELECT name FROM users WHERE id = ?', [result[i].friend_id]);
+        friends.push(result1[0].name);
+        console.log('네임', friends_name);
+    }
+    console.log(friends_name);
+    
+    res.render('friend_list_page', { friend_name: friends, my_name: req.session.name });
     // friends라는 배열 안에 DB와 연동하여 친구 목록 넣기
     // 지금은 임시로 friends 배열 생성
     // 마찬가지로 유저 이메일 넣는 friends_email 임시 생성
@@ -269,6 +280,7 @@ app.get('/friendList', function(req, res) {
     // res.render('friend_list_page', { friend_list: friends, friend_email: friends_email, my_name: req.session.name, my_email: req.session.email });
     
 });
+
 
 
 app.get('/addFriend', function(req, res) {
