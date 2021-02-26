@@ -255,8 +255,8 @@ app.get('/friendList', function(req, res) {
     // }
     
     var myemail = req.session.email;
-    var friends = [];
-    var friends_name = [];
+    // var friends = [];
+    // var friends_name = [];
     var sql = 'SELECT friend_id FROM friend where my_id = ?';
     var friends = [];
     const result = sync_pool.query('SELECT friend_id FROM friend where my_id = ?', [myemail]);
@@ -268,7 +268,7 @@ app.get('/friendList', function(req, res) {
         friends.push(result1[0].name);
         //console.log('네임', friends_name);
     }
-    //console.log(friends_name);
+    console.log(friends);
     
     res.render('friend_list_page', { friend_name: friends, my_name: req.session.name });
     // friends라는 배열 안에 DB와 연동하여 친구 목록 넣기
