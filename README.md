@@ -1,21 +1,27 @@
 # Kokoatalk
 ### Chatting Web using node.js
 #### with LAH1203(Frontend - UI, UX, View), hyeji1221(Backend - Server, DB)
+<br>
 
-### 목차
-1. [구현 목록](#구현-목록)
-    1. [로그인 및 로그아웃](#로그인-및-로그아웃)
-    2. [회원가입](#회원가입)
-    3. [친구 목록](#친구-목록)
-    4. [친구 검색/추가/삭제](#친구-검색추가)
-    5. [프로필](#프로필)
-    6. [내 정보 수정](#내-정보-수정)
-    7. [채팅](#채팅)
-    8. [서버](#서버-생성)
-    9. [데이터베이스](#데이터베이스)
-    10. [기타](#기타)
+## 구현 화면
+### 로그인 화면
+![로그인](https://user-images.githubusercontent.com/57928612/125709397-729142c4-c39d-42be-abab-04d5f9bf4d4c.png)
+### 회원가입 화면
+![회원가입](https://user-images.githubusercontent.com/57928612/125709411-8312de0e-5b6e-4643-88a3-0610867e465d.png)
+### 친구 목록
+![친구목록](https://user-images.githubusercontent.com/57928612/125709432-c70dc0ce-cee6-4d00-999d-71f0fc481c79.png)
+### 사용자 목록 -> 검색 및 추가 가능
+![사용자 목록](https://user-images.githubusercontent.com/57928612/125709471-ce6543e0-e8a2-4d1b-b16a-7605781aa9b7.png)
+### 내 프로필
+![내 프로필](https://user-images.githubusercontent.com/57928612/125709492-6cb80737-5a0d-4efb-aded-5e652ea2af10.png)
+### 친구 프로필
+![친구 프로필](https://user-images.githubusercontent.com/57928612/125709508-c8338730-f4f5-4ba7-aaf1-fb002298ee07.png)
+### 내 정보 수정 화면
+![내 정보 수정](https://user-images.githubusercontent.com/57928612/125709525-e3639c5a-21d5-40ed-85f9-4f48aad99eca.png)
 
-## 구현 목록
+<br>
+
+## 화면별 기록
 ### 로그인 및 로그아웃
   - 로그인 창 구현 ver1 - 이아현 (2020-12-30)
     + login_page.html, login.js
@@ -130,14 +136,4 @@
     + 로그인 후 친구 목록 페이지로 자동으로 넘어감
     + 자동 로그인을 체크했을 시 사용자가 보기에는 바로 친구 목록 페이지로 넘어감
   - 에러 및 일부 조건 수정 - 이아현 (2021-02-10)
-
-## 해야할 목록
-### 혜지
-  - 친구목록(이름만), 사용자목록 연동하기 -> main.js
-    - 친구목록 연동
-    - 사용자목록에서 이미 해당 사용자가 친구로 추가한 사용자이면 빼기
-  - 친구 추가, 친구 삭제, 내 정보 수정, 유저 페이지 sql문 추가 -> main.js
-    - 내 정보 수정 :white_check_mark:
-  - 일대일 채팅으로 만들기
-### 아현
-  - css 꾸미기
+  - CSS update ver3 (2021-07-15)
