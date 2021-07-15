@@ -63,8 +63,9 @@ const mysql1_pool = mysql1.createPool({
     password : '00000',
     database : 'kokoatalk'
 });
+
 // 로그인
-app.get('/login', function(req, res) {
+app.get(['/', '/login'], function(req, res) {
     const currentUserEmail = getCurrentUser();
     // 자동 로그인
     if (currentUserEmail !== null) {
@@ -577,6 +578,23 @@ app.get('/chatting', function(req, res) {
     var friend_name = req.query.friend_name;
     var my_name = req.session.name;
     // 내 이름과 친구 이름으로 채팅 시작!
+    const io = socket(server);
+    io.sockets.on("connection", (socket)=> {
+        console.log("연결이 이루어짐");
+        console.log(my_name + ' ' + friend_name);
+        console.log(friend_name + ' ' + my_name);
+        socket.join(my_name + ' ' + friend_name);
+        socket.join(friend_name + ' ' + my_name);
+        socket.on("chatting", (data)=> {
+            const { name, msg } = data;
+            console.log(msg);
+            io.sockets.in(my_name + ' ' + friend_name).emit("chatting", {
+                name: name,
+                msg: msg,
+                time: moment(new Date()).format("h:ss A")
+            });
+        });
+    });
     res.render('chatting_page', { my_name: my_name, friend_name: friend_name });
 });
 
@@ -585,25 +603,25 @@ app.use('/', router);
 
 const server = http.createServer(app);
 
-const io = socket(server);
-io.sockets.on("connection", (socket)=> {
-    console.log("연결이 이루어짐");
-    socket.on("chatting", (data)=> {
-        const { name, msg } = data;
-        console.log(msg);
-        io.sockets.emit("chatting", {
-            name: name,
-            msg: msg,
-            time: moment(new Date()).format("h:ss A")
-        });
-    });
-    socket.on('disconnect', function(data) {
-        console.log('disconnected');
-    });
-});
+// const io = socket(server);
+// io.sockets.on("connection", (socket)=> {
+//     console.log("연결이 이루어짐");
+//     socket.on("chatting", (data)=> {
+//         const { name, msg } = data;
+//         console.log(msg);
+//         io.sockets.emit("chatting", {
+//             name: name,
+//             msg: msg,
+//             time: moment(new Date()).format("h:ss A")
+//         });
+//     });
+//     socket.on('disconnect', function(data) {
+//         console.log('disconnected');
+//     });
+// });
 
 server.listen(app.get('port'), function() {
-    console.log('서버가 시작되었습니다.');
+    console.log(`${app.get('port')}번 포트로 서버가 시작되었습니다.`);
 });
 
 function autoLogin(email) {
